@@ -65,4 +65,20 @@ app.MapDelete("/deletar", () =>
     return Results.Ok();
 });
 //----------------------------------------------------------------------------------------------------------
+
+// 5º ENDPOINT deletar produto por ID ----------------------------------------------------------------------
+app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
+{
+    var produto = listaprodutos.FirstOrDefault(p => p.id == id);
+
+    if (produto == null)
+    {
+        return Results.NotFound("Produto não encontrado.");
+    }
+
+    listaprodutos.Remove(produto);
+
+    return Results.Ok("Produto deletado com sucesso.");
+});
+
 app.Run();
