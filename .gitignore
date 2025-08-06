@@ -1,0 +1,17 @@
+﻿# Pastas e arquivos do Visual Studio
+.vs/
+*.user
+*.suo
+*.vsidx
+
+# Pastas de build
+bin/
+obj/
+
+# Arquivos temporários e configs locais
+*.log
+*.db
+*.sqlite
+*.DS_Store
+*.idea/
+*.vscode/
