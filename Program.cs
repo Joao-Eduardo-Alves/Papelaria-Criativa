@@ -36,7 +36,7 @@ app.MapGet("/listarProduto", () =>
 
 app.MapGet("/buscarNome", ([FromQuery] string nome) =>
 {
-    var buscar = listaprodutos.FirstOrDefault(listaprodutos => listaprodutos.nome.ToLower() == nome.ToLower());
+    var buscar = listaprodutos.FirstOrDefault(p => p.nome.ToLower() == nome.ToLower());
 
     if (buscar == default)
     {
