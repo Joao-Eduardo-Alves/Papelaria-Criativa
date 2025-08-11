@@ -24,6 +24,7 @@ var listaprodutos = new List<Produtos>
 {
    new Produtos { Id = 1, Nome = "Caneta", Quantidade = 100, PrecoCusto = 2.5m, PrecoVenda = 5.0m },
    new Produtos { Id = 2, Nome = "Caderno", Quantidade = 50, PrecoCusto = 15.9m, PrecoVenda = 25.0m },
+   new Produtos { Id = 2, Nome = "Borracha", Quantidade = 30, PrecoCusto = 1.5m, PrecoVenda = 2.0m },
    new Produtos { Id = 3, Nome = "Lápis", Quantidade = 200, PrecoCusto = 1.2m, PrecoVenda = 3.0m }
 };
 //1º END POINT listar TODOS os protudos--------------------------------------------------------------------

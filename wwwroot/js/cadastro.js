@@ -4,7 +4,7 @@ const formCadastro = document.getElementById('form-cadastro');
 // Adiciona o evento ao enviar o formulário
 formCadastro.addEventListener('submit', async (event) => {
     event.preventDefault(); // impede o envio normal para a página não recarregar
-    console.log('Formulário enviado!'); // <-- adiciona essa linha
+    console.log('Formulário enviado!'); // para verificar se o evento está funcionando
 
     // Pega os valores dos inputs
     const nome = document.getElementById('nome').value.trim();

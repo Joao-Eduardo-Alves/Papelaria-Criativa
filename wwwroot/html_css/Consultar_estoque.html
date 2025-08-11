@@ -1,55 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Consultar Estoque</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <div class="container">
         <h1>Consultar Estoque</h1>
+
         <table>
-        <!-- Tabela que mostra os dados do estoque -->
-
             <thead>
-            <!-- Cabeçalho da tabela, onde ficam os títulos das colunas -->
-
                 <tr>
                     <th>Produto</th>
                     <th>Quantidade</th>
                     <th>Valor de custo</th>
                     <th>Preço de Venda</th>
                 </tr>
-                <!-- Títulos das colunas -->
-                 
             </thead>
-            <tbody>
-            <!-- Corpo da tabela com os dados dos produtos -->
-
-                <tr>
-                    <td>Produto 1</td>
-                    <td>50</td>
-                    <td>R$ 20,00</td>
-                    <td>R$ 10,00</td>
-                    <!-- Linha da tabela representando um produto -->
-                </tr>
-                <tr>
-                    <td>Produto 2</td>
-                    <td>30</td>
-                    <td>R$ 15,00</td>
-                    <td>R$ 7,50</td>
-                    <!-- Segunda linha da tabela para outro produto -->
-                </tr>
+            <!-- Adicione o id para facilitar o JS encontrar -->
+            <tbody id="tbody-produtos">
+                <!-- As linhas serão geradas pelo JS -->
             </tbody>
         </table>
-            
+
         <div style="text-align: center; margin-top: 20px;">
             <a href="Index.html" class="botao-voltar">Voltar à Tela Inicial</a>
-            <!--botao voltar tela inicial-->
         </div>
+    </div>
 
-    </div> 
-
+    <!-- Link para o JS - está no final para garantir que o HTML já carregou -->
+    <script src="../js/consulta.js"></script>
 </body>
 </html>
