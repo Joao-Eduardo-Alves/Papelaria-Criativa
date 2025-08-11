@@ -1,0 +1,219 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #a0ebce;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.container {
+    max-width: 400px;
+    width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+input {
+    margin-bottom: 15px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #aaaaaa;
+    border-radius: 4px;    
+}
+
+select {
+    margin-bottom: 15px;
+    padding: 8px;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 1px solid #a3a3a3;
+    border-radius: 4px;
+    appearance: none; /* Remove o estilo padrão do sistema */
+    -webkit-appearance: none;
+    -moz-appearance: none; 
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #b4b4b4;
+    border-radius: 4px;
+    padding: 8px 30px 8px 10px; /* Deixa espaço para a seta */
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23999999" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+      }
+
+button {
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+th {
+    background-color: #f4f4f9;
+}
+/* style.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Tela inicial */
+.inicio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Animação para o título */
+.titulo h1 {
+    font-size: 3em;
+    color: #000;
+    animation: cores 5s ease infinite; /* Animação das cores */
+}
+
+/* Definição da animação */
+@keyframes cores {
+    0% {
+        color: #1E90FF; /* Azul */
+    }
+    25% {
+        color: #FFD700; /* Amarelo */
+    }
+    50% {
+        color: #32CD32; /* Verde */
+    }
+    75% {
+        color: #FFD700; /* Amarelo */
+    }
+    100% {
+        color: #1E90FF; /* Azul */
+    }
+}
+
+/* Estilo para os ícones (lâmpada e lápis) */
+.icones {
+    display: flex;
+    margin: 0px 0;
+}
+
+.iconelampada i {
+    color: #FFD700; /* amarelo para a lâmpada */
+}
+
+.iconelapis i {
+    color: #2a5988; /* azul para o lápis */
+}
+ i {
+    margin: 8px;
+    color: #1c509c;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito de hover nos ícones */
+.icones i:hover {
+    transform: scale(1.2);  /* Aumenta o tamanho do ícone ao passar o mouse */
+}
+
+/* Links para as opções */
+.opcoes a {
+    font-weight: 700; 
+    display: block;
+    margin: 10px;
+    font-size: 1.5em;
+    color: #297a76;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #ddebf0;
+    border: 1px solid #0b2c97;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.opcoes a:hover {
+    background-color: #4c8baf;
+    color: #fff;
+    
+    /*Botão de voltar tela inicial*/
+}
+.botao-voltar {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Azul */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin: 20px auto 40px auto;
+  }
+  
+  .botao-voltar:hover {
+    background-color: #0056b3;
+
+    /*logo papelaria*/
+  }
+  .logo {
+    text-align: center;
+    margin-top: 1px;
+  }
+  
+  .logo-img {
+    width: 260px;  /* Ajuste o tamanho conforme necessário */
+    animation: piscar 1s infinite; /* Se quiser manter a animação */
+  }
+  @media (max-width: 480px) {
+    .container {
+        width: 95%;
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    button, .botao-voltar {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\html_css\Cadastrar_produtos.html" />
+    <None Include="wwwroot\html_css\Consultar_estoque.html" />
+    <None Include="wwwroot\html_css\Index.html" />
+    <None Include="wwwroot\html_css\Registrar_vendas.html" />
+    <None Include="wwwroot\html_css\Relatório_vendas.html" />
+    <None Include="wwwroot\html_css\style.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />

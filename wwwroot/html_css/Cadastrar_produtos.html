@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <!-- Define codificação para suportar caracteres especiais (acentos etc.) -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Faz o layout adaptar a telas de diferentes tamanhos, especialmente mobile -->
+
+    <title>Cadastro de Produto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro de Produto</h1>
+        <!--cabeçalho principal da página-->
+        <!------------------------Botões cadastrar------------------------------->
+        <form id="form-cadastro">
+            <!-- Formulário para inserir dados do produto -->
+
+            <label for="nome">Nome do Produto:</label>
+            <!-- Texto que explica o que deve ser preenchido no campo abaixo -->
+
+            <input type="text" id="nome" name="nome" required>
+            <!-- Campo de texto para o nome do produto; "required" obriga preenchimento -->
+            <!--------------------------------------------------------------------------------------------------->
+            <label for="quantidade">Quantidade em Estoque:</label>
+            <input type="number" id="quantidade" name="quantidade" required>
+            <!-- Campo numérico para quantidade disponível no estoque -->
+            <!--------------------------------------------------------------------------------------------------->
+            <label for="precoCusto">Valor de Custo:</label>
+            <input type="number" id="precoCusto" name="precoCusto" step="0.01" required>
+            <!-- Campo numérico para o valor que a loja pagou pelo produto; aceita casas decimais -->
+            <!--------------------------------------------------------------------------------------------------->
+            <label for="preco-venda">Preço de Venda:</label>
+            <input type="number" id="preco-venda" name="preco-venda" step="0.01" required>
+            <!-- Campo numérico para o preço que será vendido -->
+            <!--------------------------------------------------------------------------------------------------->
+            <button type="submit">Cadastrar Produto</button>
+            <!-- Botão para enviar o formulário -->
+
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="Index.html" class="botao-voltar">Voltar à Tela Inicial</a>
+            <!-- Botão/Link para voltar para a tela inicial -->
+        </div>
+
+    </div>
+
+    <script src="../js/cadastro.js"></script>
+</body>
+</html>

@@ -2,9 +2,10 @@
 {
     public class Produtos
     {
-        public int id { get; set; }
-        public string nome { get; set; } = default!;
-        public decimal precoCusto { get; set; }
-    
+        public int Id { get; set; }
+        public string Nome { get; set; } = default!;
+        public decimal PrecoCusto { get; set; }
+        public decimal PrecoVenda { get; set; }
+        public int Quantidade { get; set; }
     }
 }

@@ -15,14 +15,16 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
 }
 
 // Simula o banco com uma lista de produtos em memória                                         //Minhas variáveis: listaprodutos e buscar
 var listaprodutos = new List<Produtos>
 {
-    new Produtos { id = 1, nome = "Caneta", precoCusto = 2.5m },
-    new Produtos { id = 2, nome = "Caderno", precoCusto = 15.9m },
-    new Produtos { id = 3, nome = "Lápis", precoCusto = 1.2m }
+   new Produtos { Id = 1, Nome = "Caneta", Quantidade = 100, PrecoCusto = 2.5m, PrecoVenda = 5.0m },
+   new Produtos { Id = 2, Nome = "Caderno", Quantidade = 50, PrecoCusto = 15.9m, PrecoVenda = 25.0m },
+   new Produtos { Id = 3, Nome = "Lápis", Quantidade = 200, PrecoCusto = 1.2m, PrecoVenda = 3.0m }
 };
 //1º END POINT listar TODOS os protudos--------------------------------------------------------------------
 
@@ -36,7 +38,7 @@ app.MapGet("/listarProduto", () =>
 
 app.MapGet("/buscarNome", ([FromQuery] string nome) =>
 {
-    var buscar = listaprodutos.FirstOrDefault(p => p.nome.ToLower() == nome.ToLower());
+    var buscar = listaprodutos.FirstOrDefault(p => p.Nome.ToLower() == nome.ToLower());
 
     if (buscar == default)
     {
@@ -51,9 +53,10 @@ app.MapGet("/buscarNome", ([FromQuery] string nome) =>
 
 app.MapPost("/adicionar", ([FromBody] Produtos produto) =>
 {
+    produto.Id = listaprodutos.Any() ? listaprodutos.Max(p => p.Id) + 1 : 1;
     listaprodutos.Add(produto);
 
-    return Results.Created($"buscar/{produto.nome}", produto);
+    return Results.Created($"buscar/{produto.Nome}", produto);
 });
 //----------------------------------------------------------------------------------------------------------
 
@@ -69,7 +72,7 @@ app.MapDelete("/deletar", () =>
 // 5º ENDPOINT deletar produto por ID ----------------------------------------------------------------------
 app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
 {
-    var produto = listaprodutos.FirstOrDefault(p => p.id == id);
+    var produto = listaprodutos.FirstOrDefault(p => p.Id == id);
 
     if (produto == null)
     {
