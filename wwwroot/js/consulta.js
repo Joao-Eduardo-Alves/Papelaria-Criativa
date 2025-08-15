@@ -4,6 +4,7 @@ async function carregarProdutos() {
     try {
         // Faz a requisição para o endpoint listarProduto
         const response = await fetch('/listarProduto');
+
         if (!response.ok) {
             throw new Error('Erro ao buscar produtos');
         }

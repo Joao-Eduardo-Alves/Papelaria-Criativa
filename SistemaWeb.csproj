@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\html_css\Cadastrar_produtos.html" />
-    <None Include="wwwroot\html_css\Consultar_estoque.html" />
-    <None Include="wwwroot\html_css\Index.html" />
-    <None Include="wwwroot\html_css\Registrar_vendas.html" />
-    <None Include="wwwroot\html_css\Relatório_vendas.html" />
-    <None Include="wwwroot\html_css\style.css" />
+    <None Include="wwwroot\Cadastrar_produtos.html" />
+    <None Include="wwwroot\Consultar_estoque.html" />
+    <None Include="wwwroot\Index.html" />
+    <None Include="wwwroot\Registrar_vendas.html" />
+    <None Include="wwwroot\Relatório_vendas.html" />
+    <None Include="wwwroot\style.css" />
   </ItemGroup>
 
   <ItemGroup>
