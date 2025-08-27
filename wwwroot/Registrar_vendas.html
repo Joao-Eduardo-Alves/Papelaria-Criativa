@@ -17,10 +17,10 @@
 
 
             <label for="quantidade-venda">Quantidade:</label>
-            <input type="number" id="quantidade-venda" name="quantidade-venda" placeholder="Digite a quantidade do produto" required>
+            <input type="number" id="quantidade-venda" name="quantidade-venda" min="1" value="1" placeholder="Digite a quantidade do produto" required>
 
-            <label for="valor-venda">Valor Total:</label>
-            <input type="number" id="valor-venda" name="valor-venda" step="0.01" placeholder="Digite o valor da venda" required>
+            <label for="valor-venda">Valor:</label>
+            <input type="text" id="valor-venda" name="valor-venda" step="0.01" readonly required>
 
             <button type="submit">Registrar Venda</button>
 
@@ -33,8 +33,6 @@
         <h3>Vendas Registradas:</h3>
         <ul id="listaVendas"></ul>
     </div>
-
-   
 
     <script src="../js/registraVendas.js"></script>
 
