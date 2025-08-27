@@ -1,10 +1,14 @@
-﻿// Pega o formulário pelo ID
+﻿// =======================
+// Referência ao formulário
+// =======================
 const formCadastro = document.getElementById('form-cadastro');
 
-// Adiciona o evento ao enviar o formulário
+
+// =======================
+// Evento de submit do formulário de cadastro
+// =======================
 formCadastro.addEventListener('submit', async (event) => {
-    event.preventDefault(); // impede o envio normal para a página não recarregar
-    console.log('Formulário enviado!'); // para verificar se o evento está funcionando
+    event.preventDefault(); // impede o envio normal para não recarregar a página
 
     // Pega os valores dos inputs
     const nome = document.getElementById('nome').value.trim();
@@ -18,7 +22,7 @@ formCadastro.addEventListener('submit', async (event) => {
         return;
     }
 
-    // Monta o objeto que sua API espera (adaptar se necessário)
+    // Monta o objeto que a API espera
     const produto = {
         nome: nome,
         precoCusto: precoCusto,
@@ -28,6 +32,7 @@ formCadastro.addEventListener('submit', async (event) => {
 
     try {
         console.log(JSON.stringify(produto));
+
         const response = await fetch('/adicionar', {
             method: 'POST',
             headers: {
@@ -39,6 +44,7 @@ formCadastro.addEventListener('submit', async (event) => {
         if (response.ok) {
             alert('Produto cadastrado com sucesso!');
             formCadastro.reset(); // limpa o formulário
+
         } else {
             alert('Erro ao cadastrar o produto.');
         }
