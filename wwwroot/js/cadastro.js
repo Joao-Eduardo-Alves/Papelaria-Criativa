@@ -1,12 +1,7 @@
-﻿// =======================
-// Referência ao formulário
-// =======================
+﻿// Referência ao formulário
 const formCadastro = document.getElementById('form-cadastro');
 
-
-// =======================
 // Evento de submit do formulário de cadastro
-// =======================
 formCadastro.addEventListener('submit', async (event) => {
     event.preventDefault(); // impede o envio normal para não recarregar a página
 

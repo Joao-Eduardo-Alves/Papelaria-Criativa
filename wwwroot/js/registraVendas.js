@@ -1,6 +1,4 @@
-﻿    // =======================
-    // Referências aos elementos HTML
-    // =======================
+﻿    // Referências aos elementos HTML
     const formVenda = document.getElementById('form-venda');
     const listaVendas = document.getElementById('listaVendas');
     const inputProduto = document.getElementById('produto');
@@ -10,16 +8,12 @@
     const inputNomeProduto = document.getElementById('produto');
     const inputQuantidade = document.getElementById('quantidade-venda');
     const inputTotal = document.getElementById('valor-venda');
-    // ==========================================================
 
     let produtosDisponiveis = []; // produtos do back-end
     let vendas = [];              // array para armazenar vendas
 
 
-
-    // =======================
     // Carrega produtos do back-end via Minimal API
-    // =======================
     async function carregarProdutos() {
         try {
             const response = await fetch('/ListarProduto'); // rota GET que retorna lista de produtos
@@ -35,12 +29,8 @@
 
     // Chama ao carregar a página
     carregarProdutos();
-
-    // =======================
-    // Validação em tempo real do produto
-    // =======================
-
-
+    
+    // ==== Validação em tempo real do produto ====
     inputProduto.addEventListener('input', () => {
         const valor = inputProduto.value.trim().toLowerCase();
         const produtosValidados = produtosDisponiveis.map(p => p.nome.toLowerCase());
@@ -53,13 +43,10 @@
             botaoRegistrar.disabled = true;            // desabilita botão
         }
     });
-// =========== FUNÇÃO CALCULAR TOTAL =================
+// ==== FUNÇÃO CALCULAR TOTAL =====
 function calcularTotal() {
-    console.log('nome digitado:', inputNomeProduto.value.trim().toLowerCase());
-    console.log('array de produtos:', produtosDisponiveis.map(p => p.nome.toLowerCase()));
 
     const quantidade = parseFloat(inputQuantidade.value) || 0;
-    console.log('quantidade:', inputQuantidade.value);
 
     const nomeProduto = inputNomeProduto.value.trim().toLowerCase();
 
@@ -70,20 +57,12 @@ function calcularTotal() {
     const total = quantidade * preco;
 
     // Atualiza o input de valor
-
-    console.log('inputTotal:', inputTotal, 'total:', total);
     inputTotal.value = total.toFixed(2);
 }
-    // ====================================================
-
-    // ===== LISTENER PARA ATUALIZAR AUTOMATICAMENTE =====
+    // ==== LISTENER PARA ATUALIZAR AUTOMATICAMENTE ====
     inputQuantidade.addEventListener('input', calcularTotal);
-    // ===================================================
 
-
-    // =======================
     // Registro de vendas
-    // =======================
     formVenda.addEventListener('submit', function (event) {
         event.preventDefault(); // evita recarregar a página
 
@@ -113,9 +92,7 @@ function calcularTotal() {
         botaoRegistrar.disabled = true;
     });
 
-    // =======================
     // Atualizar lista de vendas na tela
-    // =======================
     function atualizarListaVendas() {
         listaVendas.innerHTML = ''; // limpa lista
         vendas.forEach((venda, index) => {
