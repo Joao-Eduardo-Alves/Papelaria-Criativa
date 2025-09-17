@@ -20,6 +20,7 @@ async function carregarProdutos() {
         produtos.forEach(produto => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
+                <td>${produto.id}</td>
                 <td>${produto.nome}</td>
                 <td>${produto.quantidade}</td>
                 <td>R$ ${Number(produto.precoCusto).toFixed(2)}</td>
