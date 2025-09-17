@@ -1,4 +1,4 @@
-﻿console.log('buscar.js carregado');
+﻿console.log('colsultaNome.js carregado');
 
 // Função para buscar produto pelo nome
 async function buscarProdutoPorNome() {
