@@ -40,8 +40,15 @@ formCadastro.addEventListener('submit', async (event) => {
             alert('Produto cadastrado com sucesso!');
             formCadastro.reset(); // limpa o formulário
 
+        } else if (response.status === 400) {
+            // Erro de validação do backend (ex: preço de venda < preço de custo)
+            const mensagem = await response.text();
+            alert("Erro de validação: " + mensagem);
+
         } else {
-            alert('Erro ao cadastrar o produto.');
+            // Outros erros (500, 404, etc.)
+            alert("Erro no servidor. Tente novamente mais tarde.");
+            console.error("Erro do servidor:", response.status, await response.text());
         }
     } catch (error) {
         alert('Erro na comunicação com o servidor.');

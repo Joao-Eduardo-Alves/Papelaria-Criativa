@@ -77,6 +77,10 @@ app.MapGet("/buscarNome", ([FromQuery] string nome) =>
 
 app.MapPost("/adicionar", ([FromBody] Produtos produto) =>
 {
+    if (produto.PrecoVenda < produto.PrecoCusto)
+    {
+        return Results.BadRequest("Preço de venda não pode ser menor que o preço de custo.");
+    }
     produto.Id = listaprodutos.Any() ? listaprodutos.Max(p => p.Id) + 1 : 1;
     listaprodutos.Add(produto);
 
