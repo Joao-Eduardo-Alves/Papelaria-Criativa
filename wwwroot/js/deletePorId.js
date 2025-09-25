@@ -2,6 +2,10 @@
 const botaoDelete = document.getElementById('btn-delete');
 
 botaoDelete.addEventListener('click', async () => {
+
+    const resposta = confirm("Tem certeza que deseja excluir este produto?");
+    if (!resposta) return; // Sai da função se clicar em "Cancelar"
+
     // Pega o valor digitado no input
     const id = document.getElementById('id-produto').value;
 
@@ -30,3 +34,4 @@ botaoDelete.addEventListener('click', async () => {
         alert("Ocorreu um erro ao tentar deletar o produto.");
     }
 });
+
