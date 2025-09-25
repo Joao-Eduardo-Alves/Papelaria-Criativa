@@ -37,3 +37,11 @@ async function carregarProdutos() {
 
 // Espera o carregamento da página para executar
 window.addEventListener('load', carregarProdutos);
+
+// Ligue o botão novo à função existente
+document.addEventListener('DOMContentLoaded', () => {
+    const btnRefresh = document.getElementById('btn-refresh');
+    if (btnRefresh) {
+        btnRefresh.addEventListener('click', carregarProdutos); // Chama a mesma função do refresh da página
+    }
+});
