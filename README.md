@@ -1,23 +1,3 @@
-# Papelaria-Criativa
+Projeto no qual estou trabalhando atualmente a fim de aprendizado.
 
-Sistema web em desenvolvimento para controle de estoque e vendas de uma papelaria fictícia, com back-end em C# usando minimal API e front-end em HTML/CSS com integração em JavaScript.
-
-Funcionalidades
-
-- Cadastro de produtos (nome, quantidade, preço de compra e venda)
-
-- Registro de vendas
-
-- Consulta rápida de estoque, e função de busca por nome
-
-- Relatórios de vendas por período
-
-⚠️ Em desenvolvimento – funcionalidades básicas implementadas. Geração de relatórios e melhorias visuais em progresso/planejamento.
-
-Como Executar
-
-Clone o repositório:
-
-git clone https://github.com/Joao-Eduardo-Alves/Papelaria-Criativa.git
-
-Execute o projeto e acesse pelo navegador.
+se consiste em um sistema WEB simples de controle de estoque, registro de vendas e geração de relatórios para uma papelaria fictícia. Solicitei o case desse sistema para uma inteligência artificial, a fim de simular uma prática real de desenvolvimento, onde exerci desde o início o ciclo de desenvolvimento, passando pela entrevista simulada com o “usuário” (IA), entendimento de suas necessidades e o planejamento do desenvolvimento. Meu foco principal desse projeto foi iniciar o aprendizado em novas tecnologias e entender como essas tecnologias se comunicam em um sistema completo, e em como otimizar e aumentar a produtividade da minha forma de desenvolver, nesse projeto utilizo IA para explicações técnicas e dúvidas, e para automação de trechos de códigos, para aumentar a produtividade.
