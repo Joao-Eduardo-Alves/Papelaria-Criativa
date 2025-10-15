@@ -89,7 +89,17 @@ function atualizarListaVendas() {
         const item = document.createElement('li');
         item.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${venda.quantidade}, Valor: R$ ${venda.total}`;
         listaVendas.appendChild(item);
-    });
+    });  
 
+    localStorage.setItem('vendas', JSON.stringify(vendas));
+}
 
-        
+// Ao carregar a página, recupera as vendas do localStorage
+window.addEventListener('DOMContentLoaded', () => {
+    const vendasSalvas = localStorage.getItem('vendas');
+    if (vendasSalvas) {
+        vendas = JSON.parse(vendasSalvas);
+        atualizarListaVendas();
+    }
+});
+
