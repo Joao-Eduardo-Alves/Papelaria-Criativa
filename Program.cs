@@ -19,7 +19,6 @@ if (app.Environment.IsDevelopment())
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Simula o banco com uma lista de produtos em memória
 var listaprodutos = new List<Produtos>
 {
     new() { Id = 1, Nome = "Caneta", Quantidade = 100, PrecoCusto = 2.5m, PrecoVenda = 5.0m },
@@ -27,16 +26,14 @@ var listaprodutos = new List<Produtos>
     new() { Id = 4, Nome = "Borracha", Quantidade = 30, PrecoCusto = 1.5m, PrecoVenda = 2.0m },
     new() { Id = 5, Nome = "Lapiseira", Quantidade = 200, PrecoCusto = 1.2m, PrecoVenda = 3.0m }
 };
-//1º END POINT listar TODOS os protudos--------------------------------------------------------------------
 
 app.MapGet("/listarProduto", () =>
 {
-    return Results.Ok(listaprodutos); // retorna a lista
+    return Results.Ok(listaprodutos);
 })
 .WithName("GetProdutos")
 .WithOpenApi();
 
-//Função LevenshteinDistance para permitir tolerância de erro na busca por nome de produto
 int LevenshteinDistance(string a, string b)
 {
     var matrix = new int[a.Length + 1, b.Length + 1];
@@ -58,7 +55,6 @@ int LevenshteinDistance(string a, string b)
 
     return matrix[a.Length, b.Length];
 }
-//2º END POINT Buscar produto por nome --------------------------------------------------------------------
 
 app.MapGet("/buscarNome", ([FromQuery] string nome) =>
 {
@@ -71,9 +67,6 @@ app.MapGet("/buscarNome", ([FromQuery] string nome) =>
 
     return Results.Ok(buscar);
 });
-//---------------------------------------------------------------------------------------------------------
-
-//3º END POINT Adiciona novo produto ----------------------------------------------------------------------
 
 app.MapPost("/adicionar", ([FromBody] Produtos produto) =>
 {
@@ -86,18 +79,14 @@ app.MapPost("/adicionar", ([FromBody] Produtos produto) =>
 
     return Results.Created($"buscar/{produto.Nome}", produto);
 });
-//----------------------------------------------------------------------------------------------------------
 
-//4º ENDPOINT Deleta produto -------------------------------------------------------------------------------
 app.MapDelete("/deletar", () =>
 {
     listaprodutos = new List<Produtos>();
 
     return Results.Ok();
 });
-//----------------------------------------------------------------------------------------------------------
 
-// 5º ENDPOINT deletar produto por ID ----------------------------------------------------------------------
 app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
 {
     var produto = listaprodutos.FirstOrDefault(p => p.Id == id);
