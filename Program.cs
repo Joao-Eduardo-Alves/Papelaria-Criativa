@@ -1,16 +1,13 @@
 using SistemaWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -72,7 +69,7 @@ app.MapPost("/adicionar", ([FromBody] Produtos produto) =>
 {
     if (produto.PrecoVenda < produto.PrecoCusto)
     {
-        return Results.BadRequest("PreÁo de venda n„o pode ser menor que o preÁo de custo.");
+        return Results.BadRequest("PreÔøΩo de venda nÔøΩo pode ser menor que o preÔøΩo de custo.");
     }
     produto.Id = listaprodutos.Any() ? listaprodutos.Max(p => p.Id) + 1 : 1;
     listaprodutos.Add(produto);
@@ -93,7 +90,7 @@ app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
 
     if (produto == null)
     {
-        return Results.NotFound("Produto n„o encontrado.");
+        return Results.NotFound("Produto nÔøΩo encontrado.");
     }
 
     listaprodutos.Remove(produto);
@@ -101,4 +98,41 @@ app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
     return Results.Ok("Produto deletado com sucesso.");
 });
 
+
+app.MapPost("/registrarVenda", ([FromBody] RegistroVenda vendaData) =>
+{
+    try
+    {
+        string nomeProduto = vendaData.Produto;
+        int quantidadeVendida = vendaData.Quantidade;
+
+        var produto = listaprodutos.FirstOrDefault(p => p.Nome.ToLower() == nomeProduto.ToLower());
+
+        if (produto == null)
+        {
+            return Results.NotFound(new { mensagem = "Produto n√£o encontrado." });
+        }
+
+        if (produto.Quantidade < quantidadeVendida)
+        {
+            return Results.BadRequest(new 
+            { 
+                mensagem = $"Estoque insuficiente. Dispon√≠vel: {produto.Quantidade}, Solicitado: {quantidadeVendida}" 
+            });
+        }
+
+        produto.Quantidade -= quantidadeVendida;
+
+        return Results.Ok(new 
+        { 
+            mensagem = "Venda registrada com sucesso.",
+            produto = produto.Nome,
+            quantidadeRestante = produto.Quantidade
+        });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { mensagem = $"Erro ao registrar venda: {ex.Message}" });
+    }
+});
 app.Run();
