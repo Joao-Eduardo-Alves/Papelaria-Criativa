@@ -2,6 +2,7 @@
 const listaVendas = document.getElementById("listaVendas");
 const inputProduto = document.getElementById("produtos");
 const botaoRegistrar = formVenda.querySelector('button[type="submit"]');
+const botaoFinalizar = document.getElementById("finalizar-venda");
 
 const inputQuantidade = document.getElementById("quantidade-produto");
 const inputValorItem = document.getElementById("valor-item");
@@ -65,12 +66,41 @@ formVenda.addEventListener("submit", async function (event) {
     document.getElementById("quantidade-produto").value
   );
   const valorTotal = parseFloat(inputValorItem.value);
-  const produtosValidados = produtosDisponiveis.map((p) =>
-    p.nome.toLowerCase()
+
+  const produto = produtosDisponiveis.find(
+    (p) => p.nome.toLowerCase() === nomeProduto.toLowerCase()
   );
 
-  if (!produtosValidados.includes(nomeProduto.toLowerCase())) {
-    alert("Produto não cadastrado. Digite um produto válido.");
+  if (!produto) {
+    alert(`Produto "${nomeProduto}" não encontrado.`);
+    return;
+  }
+
+  if (produto.quantidade < quantidade) {
+    alert(
+      `Estoque insuficiente para "${nomeProduto}".\nDisponível: ${produto.quantidade}\nSolicitado: ${quantidade}`
+    );
+    return;
+  }
+
+  const venda = {
+    produto: nomeProduto,
+    quantidade: quantidade,
+    total: valorTotal.toFixed(2),
+  };
+
+  vendas.push(venda);
+
+  atualizarListaVendas();
+
+  formVenda.reset();
+  inputProduto.style.borderColor = "";
+  botaoRegistrar.disabled = true;
+});
+
+botaoFinalizar.addEventListener("click", async () => {
+  if (vendas.lenght == 0) {
+    alert("nenhuma venda registrada");
     return;
   }
 
@@ -80,10 +110,7 @@ formVenda.addEventListener("submit", async function (event) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        produto: nomeProduto,
-        quantidade: quantidade,
-      }),
+      body: JSON.stringify(vendas),
     });
 
     const resultado = await response.json();
@@ -95,16 +122,10 @@ formVenda.addEventListener("submit", async function (event) {
 
     alert(resultado.mensagem);
 
-    const venda = {
-      produto: nomeProduto,
-      quantidade: quantidade,
-      total: valorTotal.toFixed(2),
-    };
-
-    vendas.push(venda);
+    vendas = [];
 
     atualizarListaVendas();
-    carregarProdutos;
+    carregarProdutos();
 
     formVenda.reset();
     inputProduto.style.borderColor = "";
@@ -128,7 +149,6 @@ function atualizarListaVendas() {
   localStorage.setItem("vendas", JSON.stringify(vendas));
 }
 
-// Ao carregar a página, recupera as vendas do localStorage
 window.addEventListener("DOMContentLoaded", () => {
   const vendasSalvas = localStorage.getItem("vendas");
   if (vendasSalvas) {
