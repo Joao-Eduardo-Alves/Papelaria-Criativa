@@ -86,7 +86,7 @@ formVenda.addEventListener("submit", async function (event) {
   const venda = {
     produto: nomeProduto,
     quantidade: quantidade,
-    total: valorTotal.toFixed(2),
+    valorTotal: valorTotal.toFixed(2),
   };
 
   vendas.push(venda);
@@ -142,7 +142,7 @@ function atualizarListaVendas() {
     const item = document.createElement("li");
     item.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${
       venda.quantidade
-    }, Valor: R$ ${venda.total}`;
+    }, Valor: R$ ${venda.valorTotal}`;
     listaVendas.appendChild(item);
   });
 

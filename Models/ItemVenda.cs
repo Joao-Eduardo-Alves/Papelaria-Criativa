@@ -1,6 +1,6 @@
-public class Venda
+public class ItemVenda
 {
     public string Produto { get; set; }
     public int Quantidade { get; set; }
-    public int ValorTotal { get; set; }
+    public decimal ValorTotal { get; set; }
 }
