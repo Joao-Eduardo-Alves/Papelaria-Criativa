@@ -15,12 +15,23 @@ async function carregarProdutos() {
     const response = await fetch("/ListarProduto");
     if (response.ok) {
       produtosDisponiveis = await response.json();
+      atualizarDataList();
     } else {
       alert("Erro ao carregar produtos do servidor.");
     }
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
   }
+}
+
+function atualizarDataList() {
+  const datalist = document.getElementById("listaProdutos");
+  datalist.innerHTML = "";
+  produtosDisponiveis.forEach((produto) => {
+    const option = document.createElement("option");
+    option.value = produto.nome;
+    datalist.appendChild(option);
+  });
 }
 
 carregarProdutos();
