@@ -1,4 +1,19 @@
-﻿async function carregarVendas() {
+﻿let produtosDisponiveis = [];
+
+async function carregarProdutos() {
+  try {
+    const response = await fetch("/ListarProduto");
+    if (response.ok) {
+      produtosDisponiveis = await response.json();
+    } else {
+      alert("Erro ao carregar produtos do servidor.");
+    }
+  } catch (error) {
+    console.error("Erro ao buscar produtos:", error);
+  }
+}
+
+async function carregarVendas() {
   try {
     const response = await fetch("/listarVendas");
 
@@ -18,6 +33,18 @@
         .map((item) => `${item.produto} (${item.quantidade}x)`)
         .join(", ");
 
+      const lucroVenda = venda.itensVenda.reduce((total, item) => {
+        const produto = produtosDisponiveis.find(
+          (p) => p.nome.toLowerCase() === item.produto.toLowerCase(),
+        );
+        if (produto) {
+          const lucroItem =
+            (produto.precoVenda - produto.precoCusto) * item.quantidade;
+          return total + lucroItem;
+        }
+        return total;
+      }, 0);
+
       const dataLegivel = new Intl.DateTimeFormat("pt-BR", {
         dateStyle: "short",
         timeStyle: "short",
@@ -28,12 +55,17 @@
                 <td>${dataLegivel}</td>
                 <td>${nomeProdutos}</td>
                 <td>R$ ${Number(venda.valorTotalVenda).toFixed(2)}</td>
+                <td>R$ ${Number(lucroVenda).toFixed(2)}</td>
             `;
       tbody.appendChild(tr);
     });
   } catch (error) {
     console.error(error);
-    alert("Erro ao carregar a lista de produtos.");
+    alert("Erro ao carregar a lista de vendas.");
   }
 }
-carregarVendas();
+
+window.addEventListener("load", async () => {
+  await carregarProdutos();
+  await carregarVendas();
+});
