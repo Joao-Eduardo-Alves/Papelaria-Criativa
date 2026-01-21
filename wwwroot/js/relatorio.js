@@ -1,9 +1,39 @@
-﻿// A fazer:
+﻿async function carregarVendas() {
+  try {
+    const response = await fetch("/listarVendas");
 
-//1. Após finalizar venda, enviar localStorage para o backend e limpar localStorage.
+    if (!response.ok) {
+      throw new Error("Erro ao buscar vendas");
+    }
 
-//2. Criar API de consulta, como /listarVendas, que retorna as vendas armazenadas.
+    const vendas = await response.json();
 
-//3. relatorio.JS faz requisição para está API e lista na tela de relatório
+    const tbody = document.getElementById("tbody-relatorio");
+    tbody.innerHTML = "";
 
-//refatorado
+    vendas.forEach((venda) => {
+      const tr = document.createElement("tr");
+
+      const nomeProdutos = venda.itensVenda
+        .map((item) => `${item.produto} (${item.quantidade}x)`)
+        .join(", ");
+
+      const dataLegivel = new Intl.DateTimeFormat("pt-BR", {
+        dateStyle: "short",
+        timeStyle: "short",
+      }).format(new Date(venda.data));
+
+      tr.innerHTML = `
+                <td>${venda.id}</td>
+                <td>${dataLegivel}</td>
+                <td>${nomeProdutos}</td>
+                <td>R$ ${Number(venda.valorTotalVenda).toFixed(2)}</td>
+            `;
+      tbody.appendChild(tr);
+    });
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao carregar a lista de produtos.");
+  }
+}
+carregarVendas();
