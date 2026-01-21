@@ -8,7 +8,7 @@ const inputQuantidade = document.getElementById("quantidade-produto");
 const inputValorItem = document.getElementById("valor-item");
 
 let produtosDisponiveis = [];
-let vendas = [];
+let vendas = []; //carrinho de vendas
 
 async function carregarProdutos() {
   try {
@@ -28,7 +28,7 @@ carregarProdutos();
 inputProduto.addEventListener("input", () => {
   const produtoDigitado = inputProduto.value.trim().toLowerCase();
   const produtosValidados = produtosDisponiveis.map((p) =>
-    p.nome.toLowerCase()
+    p.nome.toLowerCase(),
   );
 
   if (produtosValidados.includes(produtoDigitado)) {
@@ -46,7 +46,7 @@ function calcularTotal() {
   const nomeProduto = inputProduto.value.trim().toLowerCase();
 
   const produto = produtosDisponiveis.find(
-    (p) => p.nome.toLowerCase() === nomeProduto
+    (p) => p.nome.toLowerCase() === nomeProduto,
   );
 
   const preco = produto ? parseFloat(produto.precoVenda) : 0;
@@ -63,12 +63,12 @@ formVenda.addEventListener("submit", async function (event) {
 
   const nomeProduto = inputProduto.value.trim();
   const quantidade = parseInt(
-    document.getElementById("quantidade-produto").value
+    document.getElementById("quantidade-produto").value,
   );
   const valorTotal = parseFloat(inputValorItem.value);
 
   const produto = produtosDisponiveis.find(
-    (p) => p.nome.toLowerCase() === nomeProduto.toLowerCase()
+    (p) => p.nome.toLowerCase() === nomeProduto.toLowerCase(),
   );
 
   if (!produto) {
@@ -78,7 +78,7 @@ formVenda.addEventListener("submit", async function (event) {
 
   if (produto.quantidade < quantidade) {
     alert(
-      `Estoque insuficiente para "${nomeProduto}".\nDisponível: ${produto.quantidade}\nSolicitado: ${quantidade}`
+      `Estoque insuficiente para "${nomeProduto}".\nDisponível: ${produto.quantidade}\nSolicitado: ${quantidade}`,
     );
     return;
   }
@@ -140,14 +140,36 @@ function atualizarListaVendas() {
   listaVendas.innerHTML = "";
   vendas.forEach((venda, index) => {
     const item = document.createElement("li");
-    item.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${
+    item.classList.add("item-venda");
+
+    const texto = document.createElement("span");
+    texto.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${
       venda.quantidade
-    }, Valor: R$ ${venda.valorTotal}`;
+    }, Valor: R$ ${venda.valorTotal} `;
+
+    const botao = document.createElement("button");
+    botao.dataset.index = index;
+    botao.classList.add("btn-remover");
+    botao.textContent = "X";
+    botao.setAttribute("aria-label", `Remover`);
+    listaVendas.appendChild(botao);
+
+    item.appendChild(texto);
+    item.appendChild(botao);
     listaVendas.appendChild(item);
   });
 
   localStorage.setItem("vendas", JSON.stringify(vendas));
 }
+
+listaVendas.addEventListener("click", (event) => {
+  if (event.target.classList.contains("btn-remover")) {
+    const index = event.target.dataset.index;
+
+    vendas.splice(index, 1);
+    atualizarListaVendas();
+  }
+});
 
 window.addEventListener("DOMContentLoaded", () => {
   const vendasSalvas = localStorage.getItem("vendas");
