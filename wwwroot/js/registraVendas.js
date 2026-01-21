@@ -2,12 +2,13 @@
 const listaVendas = document.getElementById("listaVendas");
 const inputProduto = document.getElementById("produtos");
 const botaoRegistrar = formVenda.querySelector('button[type="submit"]');
+const botaoFinalizar = document.getElementById("finalizar-venda");
 
 const inputQuantidade = document.getElementById("quantidade-produto");
 const inputValorItem = document.getElementById("valor-item");
 
 let produtosDisponiveis = [];
-let vendas = [];
+let vendas = []; //carrinho de vendas
 
 async function carregarProdutos() {
   try {
@@ -27,7 +28,7 @@ carregarProdutos();
 inputProduto.addEventListener("input", () => {
   const produtoDigitado = inputProduto.value.trim().toLowerCase();
   const produtosValidados = produtosDisponiveis.map((p) =>
-    p.nome.toLowerCase()
+    p.nome.toLowerCase(),
   );
 
   if (produtosValidados.includes(produtoDigitado)) {
@@ -45,7 +46,7 @@ function calcularTotal() {
   const nomeProduto = inputProduto.value.trim().toLowerCase();
 
   const produto = produtosDisponiveis.find(
-    (p) => p.nome.toLowerCase() === nomeProduto
+    (p) => p.nome.toLowerCase() === nomeProduto,
   );
 
   const preco = produto ? parseFloat(produto.precoVenda) : 0;
@@ -62,15 +63,44 @@ formVenda.addEventListener("submit", async function (event) {
 
   const nomeProduto = inputProduto.value.trim();
   const quantidade = parseInt(
-    document.getElementById("quantidade-produto").value
+    document.getElementById("quantidade-produto").value,
   );
   const valorTotal = parseFloat(inputValorItem.value);
-  const produtosValidados = produtosDisponiveis.map((p) =>
-    p.nome.toLowerCase()
+
+  const produto = produtosDisponiveis.find(
+    (p) => p.nome.toLowerCase() === nomeProduto.toLowerCase(),
   );
 
-  if (!produtosValidados.includes(nomeProduto.toLowerCase())) {
-    alert("Produto não cadastrado. Digite um produto válido.");
+  if (!produto) {
+    alert(`Produto "${nomeProduto}" não encontrado.`);
+    return;
+  }
+
+  if (produto.quantidade < quantidade) {
+    alert(
+      `Estoque insuficiente para "${nomeProduto}".\nDisponível: ${produto.quantidade}\nSolicitado: ${quantidade}`,
+    );
+    return;
+  }
+
+  const venda = {
+    produto: nomeProduto,
+    quantidade: quantidade,
+    valorTotal: valorTotal.toFixed(2),
+  };
+
+  vendas.push(venda);
+
+  atualizarListaVendas();
+
+  formVenda.reset();
+  inputProduto.style.borderColor = "";
+  botaoRegistrar.disabled = true;
+});
+
+botaoFinalizar.addEventListener("click", async () => {
+  if (vendas.lenght == 0) {
+    alert("nenhuma venda registrada");
     return;
   }
 
@@ -80,10 +110,7 @@ formVenda.addEventListener("submit", async function (event) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        produto: nomeProduto,
-        quantidade: quantidade,
-      }),
+      body: JSON.stringify(vendas),
     });
 
     const resultado = await response.json();
@@ -95,16 +122,10 @@ formVenda.addEventListener("submit", async function (event) {
 
     alert(resultado.mensagem);
 
-    const venda = {
-      produto: nomeProduto,
-      quantidade: quantidade,
-      total: valorTotal.toFixed(2),
-    };
-
-    vendas.push(venda);
+    vendas = [];
 
     atualizarListaVendas();
-    carregarProdutos;
+    carregarProdutos();
 
     formVenda.reset();
     inputProduto.style.borderColor = "";
@@ -119,16 +140,37 @@ function atualizarListaVendas() {
   listaVendas.innerHTML = "";
   vendas.forEach((venda, index) => {
     const item = document.createElement("li");
-    item.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${
+    item.classList.add("item-venda");
+
+    const texto = document.createElement("span");
+    texto.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${
       venda.quantidade
-    }, Valor: R$ ${venda.total}`;
+    }, Valor: R$ ${venda.valorTotal} `;
+
+    const botao = document.createElement("button");
+    botao.dataset.index = index;
+    botao.classList.add("btn-remover");
+    botao.textContent = "X";
+    botao.setAttribute("aria-label", `Remover`);
+    listaVendas.appendChild(botao);
+
+    item.appendChild(texto);
+    item.appendChild(botao);
     listaVendas.appendChild(item);
   });
 
   localStorage.setItem("vendas", JSON.stringify(vendas));
 }
 
-// Ao carregar a página, recupera as vendas do localStorage
+listaVendas.addEventListener("click", (event) => {
+  if (event.target.classList.contains("btn-remover")) {
+    const index = event.target.dataset.index;
+
+    vendas.splice(index, 1);
+    atualizarListaVendas();
+  }
+});
+
 window.addEventListener("DOMContentLoaded", () => {
   const vendasSalvas = localStorage.getItem("vendas");
   if (vendasSalvas) {

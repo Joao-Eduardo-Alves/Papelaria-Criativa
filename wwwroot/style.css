@@ -1,191 +1,199 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #a0ebce;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #a0ebce;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 .container {
-    max-width: 600px;
-    width: 90%;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    text-align: center;
-    color: #333;
+  text-align: center;
+  color: #333;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 label {
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
 }
 
 input {
-    margin-bottom: 15px;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #aaaaaa;
-    border-radius: 4px;    
+  margin-bottom: 15px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #aaaaaa;
+  border-radius: 4px;
 }
 
 select {
-    margin-bottom: 15px;
-    padding: 8px;
-    font-size: 14px;
-    background-color: #ffffff;
-    border: 1px solid #a3a3a3;
-    border-radius: 4px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none; 
-    background-color: rgb(255, 255, 255);
-    border: 1px solid #b4b4b4;
-    border-radius: 4px;
-    padding: 8px 30px 8px 10px;
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23999999" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 20px;
+  margin-bottom: 15px;
+  padding: 8px;
+  font-size: 14px;
+  background-color: #ffffff;
+  border: 1px solid #a3a3a3;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #b4b4b4;
+  border-radius: 4px;
+  padding: 8px 30px 8px 10px;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23999999" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
 }
 
+.btn-remover {
+  background-color: red;
+  width: 28px;
+  height: 28px;
+}
+.btn-remover:hover {
+  background-color: darkred;
+}
 button {
-    padding: 10px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 th {
-    background-color: #f4f4f9;
+  background-color: #f4f4f9;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-table, th, td {
-    border: 1px solid #ddd;
+table,
+th,
+td {
+  border: 1px solid #ddd;
 }
 
-th, td {
-    padding: 10px;
-    text-align: left;
+th,
+td {
+  padding: 10px;
+  text-align: left;
 }
 
 .inicio {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .icones {
-    display: flex;
-    margin: 0px 0;
+  display: flex;
+  margin: 0px 0;
 }
 
 .iconelampada i {
-    color: #FFD700;
+  color: #ffd700;
 }
 
 .iconelapis i {
-    color: #2a5988;
+  color: #2a5988;
 }
 
 i {
-    margin: 8px;
-    color: #1c509c;
-    transition: transform 0.3s ease;
+  margin: 8px;
+  color: #1c509c;
+  transition: transform 0.3s ease;
 }
 
 .icones i:hover {
-    transform: scale(1.2); 
+  transform: scale(1.2);
 }
 
 .opcoes a {
-    font-weight: 700; 
-    display: block;
-    margin: 10px;
-    font-size: 1.5em;
-    color: #297a76;
-    text-decoration: none;
-    padding: 10px;
-    background-color: #ddebf0;
-    border: 1px solid #0b2c97;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+  font-weight: 700;
+  display: block;
+  margin: 10px;
+  font-size: 1.5em;
+  color: #297a76;
+  text-decoration: none;
+  padding: 10px;
+  background-color: #ddebf0;
+  border: 1px solid #0b2c97;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 
 .opcoes a:hover {
-    background-color: #4c8baf;
-    color: #fff;
+  background-color: #4c8baf;
+  color: #fff;
 }
 
 .botao-voltar {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    margin: 20px auto 40px auto;
-
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin: 20px auto 40px auto;
 }
-  
-.botao-voltar:hover {
-    background-color: #0056b3;
 
+.botao-voltar:hover {
+  background-color: #0056b3;
 }
 
 .logo {
-    text-align: center;
-    margin-top: 1px;
-
+  text-align: center;
+  margin-top: 1px;
 }
-  
-.logo-img {
-    width: 260px;  
-    animation: piscar 1s infinite; 
 
+.logo-img {
+  width: 260px;
+  animation: piscar 1s infinite;
 }
 
 @media (max-width: 480px) {
-    .container {
-        width: 95%;
-        margin: 10px auto;
-        padding: 15px;
-    }
+  .container {
+    width: 95%;
+    margin: 10px auto;
+    padding: 15px;
+  }
 
-    h1 {
-        font-size: 1.5em;
-    }
+  h1 {
+    font-size: 1.5em;
+  }
 
-    button, .botao-voltar {
-        width: 100%;
-        box-sizing: border-box;
-    }
+  button,
+  .botao-voltar {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

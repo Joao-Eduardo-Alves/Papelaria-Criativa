@@ -24,6 +24,8 @@ var listaprodutos = new List<Produtos>
     new() { Id = 4, Nome = "Lapiseira", Quantidade = 200, PrecoCusto = 1.2m, PrecoVenda = 3.0m }
 };
 
+var vendasConcluidas = new List<Venda>();
+
 app.MapGet("/listarProduto", () =>
 {
     return Results.Ok(listaprodutos);
@@ -98,41 +100,72 @@ app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
     return Results.Ok("Produto deletado com sucesso.");
 });
 
-
-app.MapPost("/registrarVenda", ([FromBody] RegistroVenda vendaData) =>
+app.MapPost("/registrarVenda", ([FromBody] List<ItemVenda> itemVenda) =>
 {
     try
     {
-        string nomeProduto = vendaData.Produto;
-        int quantidadeVendida = vendaData.Quantidade;
-
-        var produto = listaprodutos.FirstOrDefault(p => p.Nome.ToLower() == nomeProduto.ToLower());
-
-        if (produto == null)
+        if (itemVenda == null || itemVenda.Count == 0)
         {
-            return Results.NotFound(new { mensagem = "Produto não encontrado." });
+            return Results.BadRequest(new { mensagem = "Nenhuma venda foi fornecida." });
         }
 
-        if (produto.Quantidade < quantidadeVendida)
+        decimal totalVenda = 0;
+
+        foreach (var item in itemVenda)
         {
-            return Results.BadRequest(new 
-            { 
-                mensagem = $"Estoque insuficiente. Disponível: {produto.Quantidade}, Solicitado: {quantidadeVendida}" 
-            });
+            var produto = listaprodutos.FirstOrDefault(p => p.Nome.ToLower() == item.Produto.ToLower());
+
+            if (produto == null)
+            {
+                return Results.NotFound(new { mensagem = $"Produto '{item.Produto}' não encontrado." });
+            }
+
+            if (produto.Quantidade < item.Quantidade)
+            {
+                return Results.BadRequest(new 
+                { 
+                    mensagem = $"Estoque insuficiente para '{item.Produto}'. Disponível: {produto.Quantidade}, Solicitado: {item.Quantidade}" 
+                });
+            }
+        }
+            
+        foreach (var item in itemVenda)
+        {
+            var produto = listaprodutos.First(p => p.Nome.ToLower() == item.Produto.ToLower());
+            produto.Quantidade -= item.Quantidade;
+            totalVenda += item.ValorTotal;
         }
 
-        produto.Quantidade -= quantidadeVendida;
+        var novaVenda = new Venda
+        {
+            Id = vendasConcluidas.Count + 1,
+            Data = DateTime.Now,
+            ItensVenda = itemVenda,
+        }; 
 
+        vendasConcluidas.Add(novaVenda);
+        
         return Results.Ok(new 
         { 
-            mensagem = "Venda registrada com sucesso.",
-            produto = produto.Nome,
-            quantidadeRestante = produto.Quantidade
+            mensagem = "Venda(s) registrada(s) com sucesso!",
         });
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(new { mensagem = $"Erro ao registrar venda: {ex.Message}" });
+        return Results.BadRequest(new { mensagem = $"Erro ao registrar vendas: {ex.Message}" });
     }
 });
+
+
+//===================================
+
+app.MapGet("/listarVendas", () =>
+{
+    return Results.Ok(vendasConcluidas);
+})
+.WithName("GetVendas")
+.WithOpenApi();
+
+
+//===================================
 app.Run();
