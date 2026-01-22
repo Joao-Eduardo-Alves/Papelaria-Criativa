@@ -156,9 +156,6 @@ app.MapPost("/registrarVenda", ([FromBody] List<ItemVenda> itemVenda) =>
     }
 });
 
-
-//===================================
-
 app.MapGet("/listarVendas", () =>
 {
     return Results.Ok(vendasConcluidas);
@@ -166,6 +163,4 @@ app.MapGet("/listarVendas", () =>
 .WithName("GetVendas")
 .WithOpenApi();
 
-
-//===================================
 app.Run();
