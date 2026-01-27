@@ -15,3 +15,11 @@ obj/
 *.DS_Store
 *.idea/
 *.vscode/
+
+# SQL Server LocalDB
+*.mdf
+*.ldf
+*.ndf
+
+# Backup files
+*.bak

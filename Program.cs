@@ -1,12 +1,24 @@
 using SistemaWeb.Models;
+using SistemaWeb.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
@@ -16,149 +28,128 @@ if (app.Environment.IsDevelopment())
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-var listaprodutos = new List<Produtos>
+app.MapGet("/listarProduto", async (ApplicationDbContext db) =>
 {
-    new() { Id = 1, Nome = "Caneta", Quantidade = 100, PrecoCusto = 2.5m, PrecoVenda = 5.0m },
-    new() { Id = 2, Nome = "Caderno", Quantidade = 50, PrecoCusto = 15.9m, PrecoVenda = 25.0m },
-    new() { Id = 3, Nome = "Borracha", Quantidade = 30, PrecoCusto = 1.5m, PrecoVenda = 2.0m },
-    new() { Id = 4, Nome = "Lapiseira", Quantidade = 200, PrecoCusto = 1.2m, PrecoVenda = 3.0m }
-};
-
-var vendasConcluidas = new List<Venda>();
-
-app.MapGet("/listarProduto", () =>
-{
-    return Results.Ok(listaprodutos);
+    var produtos = await db.Produtos.ToListAsync();
+    return Results.Ok(produtos);
 })
 .WithName("GetProdutos")
 .WithOpenApi();
 
-int LevenshteinDistance(string a, string b)
+app.MapGet("/buscarNome", async ([FromQuery] string nome, ApplicationDbContext db) =>
 {
-    var matrix = new int[a.Length + 1, b.Length + 1];
+     var produtos = await db.Produtos
+        .AsNoTracking()
+        .Where(p => p.Nome.Contains(nome))
+        .ToListAsync();
 
-    for (int i = 0; i <= a.Length; i++) matrix[i, 0] = i;
-    for (int j = 0; j <= b.Length; j++) matrix[0, j] = j;
-
-    for (int i = 1; i <= a.Length; i++)
+    if (!produtos.Any())
     {
-        for (int j = 1; j <= b.Length; j++)
-        {
-            int cost = a[i - 1] == b[j - 1] ? 0 : 1;
-            matrix[i, j] = Math.Min(
-                Math.Min(matrix[i - 1, j] + 1, matrix[i, j - 1] + 1),
-                matrix[i - 1, j - 1] + cost
-            );
-        }
+        return Results.NotFound(new { mensagem = "Nenhum produto encontrado." });
     }
 
-    return matrix[a.Length, b.Length];
-}
+    return Results.Ok(produtos);
+})
+.WithOpenApi();
 
-app.MapGet("/buscarNome", ([FromQuery] string nome) =>
-{
-    var buscar = listaprodutos.FirstOrDefault(p => LevenshteinDistance(p.Nome.ToLower(), nome.ToLower()) <=2);
-
-    if (buscar == default)
-    {
-        return Results.NotFound();
-    }
-
-    return Results.Ok(buscar);
-});
-
-app.MapPost("/adicionar", ([FromBody] Produtos produto) =>
+app.MapPost("/adicionar", async ([FromBody] Produtos produto, ApplicationDbContext db) =>
 {
     if (produto.PrecoVenda < produto.PrecoCusto)
     {
-        return Results.BadRequest("Pre�o de venda n�o pode ser menor que o pre�o de custo.");
+        return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor que o preço de custo." });
     }
-    produto.Id = listaprodutos.Any() ? listaprodutos.Max(p => p.Id) + 1 : 1;
-    listaprodutos.Add(produto);
 
-    return Results.Created($"buscar/{produto.Nome}", produto);
-});
+    db.Produtos.Add(produto);
+    await db.SaveChangesAsync();
 
-app.MapDelete("/deletar", () =>
+    return Results.Created($"/buscarNome?nome={produto.Nome}", produto);
+})
+.WithOpenApi();
+
+app.MapDelete("/deletar", async (ApplicationDbContext db) =>
 {
-    listaprodutos = new List<Produtos>();
+    await db.Produtos.ExecuteDeleteAsync();
+    await db.SaveChangesAsync();
 
-    return Results.Ok();
-});
+    return Results.Ok(new { mensagem = "Todos os produtos foram deletados." });
+})
+.WithOpenApi();
 
-app.MapDelete("/deletarProduto/{id}", ([FromRoute] int id) =>
+app.MapDelete("/deletarProduto/{id}", async ([FromRoute] int id, ApplicationDbContext db) =>
 {
-    var produto = listaprodutos.FirstOrDefault(p => p.Id == id);
+    var produto = await db.Produtos.FindAsync(id);
 
     if (produto == null)
     {
-        return Results.NotFound("Produto n�o encontrado.");
+        return Results.NotFound(new { mensagem = "Produto não encontrado." });
     }
 
-    listaprodutos.Remove(produto);
+    db.Produtos.Remove(produto);
+    await db.SaveChangesAsync();
 
-    return Results.Ok("Produto deletado com sucesso.");
-});
+    return Results.Ok(new { mensagem = "Produto deletado com sucesso." });
+})
+.WithOpenApi();
 
-app.MapPost("/registrarVenda", ([FromBody] List<ItemVenda> itemVenda) =>
+app.MapPost("/registrarVenda", async ([FromBody] List<ItemVenda> itensVenda, ApplicationDbContext db) =>
 {
     try
     {
-        if (itemVenda == null || itemVenda.Count == 0)
+        if (itensVenda == null || itensVenda.Count == 0)
         {
             return Results.BadRequest(new { mensagem = "Nenhuma venda foi fornecida." });
         }
 
-        decimal totalVenda = 0;
-
-        foreach (var item in itemVenda)
+        foreach (var item in itensVenda)
         {
-            var produto = listaprodutos.FirstOrDefault(p => p.Nome.ToLower() == item.Produto.ToLower());
+            var produto = await db.Produtos.FindAsync(item.ProdutoId);
 
             if (produto == null)
             {
-                return Results.NotFound(new { mensagem = $"Produto '{item.Produto}' não encontrado." });
+                return Results.NotFound(new { mensagem = $"Produto com ID '{item.ProdutoId}' não encontrado." });
             }
 
             if (produto.Quantidade < item.Quantidade)
             {
-                return Results.BadRequest(new 
-                { 
-                    mensagem = $"Estoque insuficiente para '{item.Produto}'. Disponível: {produto.Quantidade}, Solicitado: {item.Quantidade}" 
+                return Results.BadRequest(new
+                {
+                    mensagem = $"Estoque insuficiente para '{produto.Nome}'. Disponível: {produto.Quantidade}, Solicitado: {item.Quantidade}"
                 });
             }
-        }
-            
-        foreach (var item in itemVenda)
-        {
-            var produto = listaprodutos.First(p => p.Nome.ToLower() == item.Produto.ToLower());
+        
             produto.Quantidade -= item.Quantidade;
-            totalVenda += item.ValorTotal;
+            item.ValorTotal = item.Quantidade * produto.PrecoVenda;
         }
 
         var novaVenda = new Venda
         {
-            Id = vendasConcluidas.Count + 1,
             Data = DateTime.Now,
-            ItensVenda = itemVenda,
-        }; 
-
-        vendasConcluidas.Add(novaVenda);
+            ItensVenda = itensVenda
+        };
         
-        return Results.Ok(new 
-        { 
-            mensagem = "Venda(s) registrada(s) com sucesso!",
+        novaVenda.ValorTotal = novaVenda.ValorTotalVenda;
+
+        db.Vendas.Add(novaVenda);
+        await db.SaveChangesAsync();
+
+        return Results.Ok(new
+        {
+            mensagem = "Venda registrada com sucesso!",
         });
     }
     catch (Exception ex)
     {
-        return Results.BadRequest(new { mensagem = $"Erro ao registrar vendas: {ex.Message}" });
+        return Results.BadRequest(new { mensagem = $"Erro ao registrar venda: {ex.Message}" });
     }
-});
+})
+.WithOpenApi();
 
-app.MapGet("/listarVendas", () =>
+app.MapGet("/listarVendas", async (ApplicationDbContext db) =>
 {
-    return Results.Ok(vendasConcluidas);
+    var vendas = await db.Vendas
+        .Include(v => v.ItensVenda)
+        .ToListAsync();
+    return Results.Ok(vendas);
 })
 .WithName("GetVendas")
 .WithOpenApi();

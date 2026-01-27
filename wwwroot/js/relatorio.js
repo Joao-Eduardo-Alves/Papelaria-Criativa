@@ -5,6 +5,7 @@ async function carregarProdutos() {
     const response = await fetch("/ListarProduto");
     if (response.ok) {
       produtosDisponiveis = await response.json();
+      console.log("Produtos recebidos:", produtosDisponiveis);
     } else {
       alert("Erro ao carregar produtos do servidor.");
     }
@@ -23,6 +24,8 @@ async function carregarVendas() {
 
     const vendas = await response.json();
 
+    console.log("Vendas recebidas:", vendas);
+
     const tbody = document.getElementById("tbody-relatorio");
     tbody.innerHTML = "";
 
@@ -30,19 +33,25 @@ async function carregarVendas() {
       const tr = document.createElement("tr");
 
       const nomeProdutos = venda.itensVenda
-        .map((item) => `${item.produto} (${item.quantidade}x)`)
+        .map((item) => {
+          const produto = produtosDisponiveis.find(
+            (p) => p.id === item.produtoId,
+          );
+          return produto
+            ? `${produto.nome} (${item.quantidade}x)`
+            : `Produto ${item.produtoId} (${item.quantidade}x)`;
+        })
         .join(", ");
 
       const lucroVenda = venda.itensVenda.reduce((total, item) => {
         const produto = produtosDisponiveis.find(
-          (p) => p.nome.toLowerCase() === item.produto.toLowerCase(),
+          (p) => p.id === item.produtoId,
         );
-        if (produto) {
-          const lucroItem =
-            (produto.precoVenda - produto.precoCusto) * item.quantidade;
-          return total + lucroItem;
-        }
-        return total;
+        if (!produto) return total;
+
+        const lucroItem =
+          (produto.precoVenda - produto.precoCusto) * item.quantidade;
+        return total + lucroItem;
       }, 0);
 
       const dataLegivel = new Intl.DateTimeFormat("pt-BR", {
@@ -61,7 +70,7 @@ async function carregarVendas() {
     });
   } catch (error) {
     console.error(error);
-    alert("Erro ao carregar a lista de vendas.");
+    alert("Erro ao carregar o relatório de vendas.");
   }
 }
 

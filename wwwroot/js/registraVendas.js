@@ -8,7 +8,7 @@ const inputQuantidade = document.getElementById("quantidade-produto");
 const inputValorItem = document.getElementById("valor-item");
 
 let produtosDisponiveis = [];
-let vendas = []; //carrinho de vendas
+let vendas = [];
 
 async function carregarProdutos() {
   try {
@@ -73,14 +73,15 @@ formVenda.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const nomeProduto = inputProduto.value.trim();
-  const quantidade = parseInt(
-    document.getElementById("quantidade-produto").value,
-  );
-  const valorTotal = parseFloat(inputValorItem.value);
 
   const produto = produtosDisponiveis.find(
     (p) => p.nome.toLowerCase() === nomeProduto.toLowerCase(),
   );
+
+  const quantidade = parseInt(
+    document.getElementById("quantidade-produto").value,
+  );
+  const valorTotal = parseFloat(inputValorItem.value);
 
   if (!produto) {
     alert(`Produto "${nomeProduto}" não encontrado.`);
@@ -95,9 +96,10 @@ formVenda.addEventListener("submit", async function (event) {
   }
 
   const venda = {
-    produto: nomeProduto,
+    produtoId: produto.id,
     quantidade: quantidade,
     valorTotal: valorTotal.toFixed(2),
+    nomeParaExibicao: produto.nome,
   };
 
   vendas.push(venda);
@@ -110,12 +112,13 @@ formVenda.addEventListener("submit", async function (event) {
 });
 
 botaoFinalizar.addEventListener("click", async () => {
-  if (vendas.lenght == 0) {
+  if (vendas.length == 0) {
     alert("nenhuma venda registrada");
     return;
   }
 
   try {
+    console.log("Vendas enviadas:", vendas);
     const response = await fetch("/registrarVenda", {
       method: "POST",
       headers: {
@@ -154,7 +157,7 @@ function atualizarListaVendas() {
     item.classList.add("item-venda");
 
     const texto = document.createElement("span");
-    texto.textContent = `${index + 1}. Produto: ${venda.produto}, Quantidade: ${
+    texto.textContent = `${index + 1}. Produto: ${venda.nomeParaExibicao}, Quantidade: ${
       venda.quantidade
     }, Valor: R$ ${venda.valorTotal} `;
 
