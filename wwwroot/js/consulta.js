@@ -2,7 +2,6 @@
 
 async function carregarProdutos() {
   try {
-    // Faz a requisição para o endpoint listarProduto
     const response = await fetch("/listarProduto");
 
     if (!response.ok) {
@@ -12,11 +11,9 @@ async function carregarProdutos() {
     const produtos = await response.json();
     console.log("Produtos recebidos:", produtos);
 
-    // Pega o tbody da tabela para inserir as linhas
     const tbody = document.getElementById("tbody-produtos");
-    tbody.innerHTML = ""; // Limpa as linhas anteriores
+    tbody.innerHTML = "";
 
-    // Para cada produto cria uma linha na tabela
     produtos.forEach((produto) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -34,13 +31,11 @@ async function carregarProdutos() {
   }
 }
 
-// Espera o carregamento da página para executar
 window.addEventListener("load", carregarProdutos);
 
-// Ligue o botão novo à função existente
 document.addEventListener("DOMContentLoaded", () => {
   const btnRefresh = document.getElementById("btn-refresh");
   if (btnRefresh) {
-    btnRefresh.addEventListener("click", carregarProdutos); // Chama a mesma função do refresh da página
+    btnRefresh.addEventListener("click", carregarProdutos);
   }
 });
