@@ -62,9 +62,9 @@ app.MapPost("/adicionar", async ([FromBody] Produto produto, ApplicationDbContex
     {
         return Results.BadRequest(new { mensagem = "Nome do produto é obrigatório." });
     }
-    if (produto.PrecoVenda < produto.PrecoCusto)
+    if (produto.PrecoVenda <= produto.PrecoCusto)
     {
-        return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor que o preço de custo." });
+        return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor ou igual ao preço de custo." });
     }
     if (produto.Quantidade <= 0)
     {
@@ -187,5 +187,37 @@ app.MapGet("/relatorio/vendas", async (ApplicationDbContext db) =>
         fileDownloadName: $"relatorio_vendas_{DateTime.Now:yyyyMMddHHmm}.pdf"
     );
 });
+
+app.MapPut("/editarProduto/{id}", async ([FromRoute] int id, [FromBody] Produto produtoAtualizado, ApplicationDbContext db) =>
+{
+    var produto = await db.Produtos.FindAsync(id);
+
+    if (produto == null)
+    {
+        return Results.NotFound(new { mensagem = "Produto não encontrado." });
+    }
+    if (string.IsNullOrWhiteSpace(produtoAtualizado.Nome))
+    {
+        return Results.BadRequest(new { mensagem = "Nome do produto é obrigatório." });
+    }
+    if (produtoAtualizado.PrecoVenda <= produtoAtualizado.PrecoCusto)
+    {
+        return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor ou igual ao preço de custo." });
+    }
+    if (produtoAtualizado.Quantidade <= 0)
+    {
+        return Results.BadRequest(new { mensagem = "Quantidade não pode ser menor que 0." });
+    }
+    produto.Nome = produtoAtualizado.Nome;
+    produto.Quantidade = produtoAtualizado.Quantidade;
+    produto.PrecoCusto = produtoAtualizado.PrecoCusto;
+    produto.PrecoVenda = produtoAtualizado.PrecoVenda;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { mensagem = "Produto atualizado com sucesso." });
+})
+.WithName("EditarProduto")
+.WithOpenApi();
 
 app.Run();
