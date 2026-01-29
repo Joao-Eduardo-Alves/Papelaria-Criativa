@@ -1,63 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Consultar Estoque</title>
     <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
+      <h1>Consultar Estoque</h1>
 
-        <h1>Consultar Estoque</h1>
+      <form id="form-cadastro">
+        <label for="buscar-nome">Nome do Produto:</label>
+        <input type="text" id="buscar-nome" name="buscar-nome" required />
 
-        <form id="form-cadastro">
+        <button id="btn-buscar" type="button">Buscar</button>
 
-            <label for="buscar-nome">Nome do Produto:</label>
-            <input type="text" id="buscar-nome" name="buscar-nome" required>
-
-            <button id="btn-buscar" type="button">Buscar</button>
-
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="btn-refresh" type="button" style="background-color: mediumpurple; color: white;">
-                    Recarregar todos produtos
-                </button>
-            </div>
-
-        </form>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Valor de custo</th>
-                    <th>Preço de Venda</th>
-                </tr>
-            </thead>
-    
-            <tbody id="tbody-produtos">
-                <!-- As linhas serão geradas pelo JS -->
-            </tbody>
-        </table>
-        
-        <div style="text-align: center; margin-top: 20px;">
-
-            <input type="number" id="id-produto" placeholder="Digite o ID do produto a ser deletado" style="width: 250px; height: 30px;">
-            <button id="btn-delete" style="background-color: indianred; color: white;">
-                Deletar
-            </button>
-
+        <div style="text-align: center; margin-top: 20px">
+          <button
+            id="btn-refresh"
+            type="button"
+            style="background-color: mediumpurple; color: white"
+          >
+            Recarregar todos produtos
+          </button>
         </div>
-       
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="Index.html" class="botao-voltar">Voltar à Tela Inicial</a>
-        </div>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Valor de custo</th>
+            <th>Preço de Venda</th>
+            <th>Editar</th>
+          </tr>
+        </thead>
+
+        <tbody id="tbody-produtos">
+          <!-- As linhas serão geradas pelo JS -->
+        </tbody>
+      </table>
+
+      <div style="text-align: center; margin-top: 20px">
+        <input
+          type="number"
+          id="id-produto"
+          placeholder="Digite o ID do produto a ser deletado"
+          style="width: 250px; height: 30px"
+        />
+        <button
+          id="btn-delete"
+          style="background-color: indianred; color: white"
+        >
+          Deletar
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px">
+        <a href="Index.html" class="botao-voltar">Voltar à Tela Inicial</a>
+      </div>
+    </div>
+
+    <div
+      id="modal-editar"
+      style="
+        display: none;
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        z-index: 1000;
+      "
+    >
+      <h3>Editar Produto</h3>
+      <div>
+        <label>Nome:</label>
+        <input type="text" id="edit-nome" />
+      </div>
+      <div>
+        <label>Quantidade:</label>
+        <input type="number" id="edit-quantidade" />
+      </div>
+      <div>
+        <label>Preço Custo:</label>
+        <input type="number" id="edit-preco-custo" step="0.01" />
+      </div>
+      <div>
+        <label>Preço Venda:</label>
+        <input type="number" id="edit-preco-venda" step="0.01" />
+      </div>
+      <button id="btn-salvar">Salvar</button>
+      <button id="btn-cancelar">Cancelar</button>
     </div>
 
     <script src="../js/consulta.js"></script>
     <script src="../js/consultaNome.js"></script>
     <script src="../js/deletePorId.js"></script>
-</body>
+  </body>
 </html>
