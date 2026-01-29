@@ -35,7 +35,9 @@ namespace SistemaWeb.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Data = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Data = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ValorTotalVenda = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    LucroTotalVenda = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +52,11 @@ namespace SistemaWeb.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VendaId = table.Column<int>(type: "int", nullable: false),
                     ProdutoId = table.Column<int>(type: "int", nullable: false),
+                    NomeExibicao = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
+                    PrecoCustoAtual = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PrecoVendaAtual = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CustoTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ValorTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
