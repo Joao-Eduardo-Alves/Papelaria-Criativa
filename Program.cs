@@ -2,6 +2,10 @@ using SistemaWeb.Models;
 using SistemaWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,31 +42,39 @@ app.MapGet("/listarProduto", async (ApplicationDbContext db) =>
 
 app.MapGet("/buscarNome", async ([FromQuery] string nome, ApplicationDbContext db) =>
 {
-     var produtos = await db.Produtos
-        .AsNoTracking()
-        .Where(p => p.Nome.Contains(nome))
-        .ToListAsync();
+    var produto = await db.Produtos
+       .AsNoTracking()
+       .Where(p => p.Nome.Contains(nome))
+       .ToListAsync();
 
-    if (!produtos.Any())
+    if (!produto.Any())
     {
         return Results.NotFound(new { mensagem = "Nenhum produto encontrado." });
     }
 
-    return Results.Ok(produtos);
+    return Results.Ok(produto);
 })
 .WithOpenApi();
 
-app.MapPost("/adicionar", async ([FromBody] Produtos produto, ApplicationDbContext db) =>
+app.MapPost("/adicionar", async ([FromBody] Produto produto, ApplicationDbContext db) =>
 {
+    if (string.IsNullOrWhiteSpace(produto.Nome))
+    {
+        return Results.BadRequest(new { mensagem = "Nome do produto é obrigatório." });
+    }
     if (produto.PrecoVenda < produto.PrecoCusto)
     {
         return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor que o preço de custo." });
+    }
+    if (produto.Quantidade <= 0)
+    {
+        return Results.BadRequest(new { mensagem = "Quantidade não pode ser menor que 0." });
     }
 
     db.Produtos.Add(produto);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/buscarNome?nome={produto.Nome}", produto);
+    return Results.Created($"/produtos/{produto.Id}", produto);
 })
 .WithOpenApi();
 
@@ -116,9 +128,12 @@ app.MapPost("/registrarVenda", async ([FromBody] List<ItemVenda> itensVenda, App
                     mensagem = $"Estoque insuficiente para '{produto.Nome}'. Disponível: {produto.Quantidade}, Solicitado: {item.Quantidade}"
                 });
             }
-        
             produto.Quantidade -= item.Quantidade;
-            item.ValorTotal = item.Quantidade * produto.PrecoVenda;
+            item.NomeExibicao = produto.Nome;
+            item.PrecoCustoAtual = produto.PrecoCusto;
+            item.PrecoVendaAtual = produto.PrecoVenda;
+
+            item.CalcularTotalItem();
         }
 
         var novaVenda = new Venda
@@ -126,8 +141,7 @@ app.MapPost("/registrarVenda", async ([FromBody] List<ItemVenda> itensVenda, App
             Data = DateTime.Now,
             ItensVenda = itensVenda
         };
-        
-        novaVenda.ValorTotal = novaVenda.ValorTotalVenda;
+        novaVenda.CalcularTotalVenda();
 
         db.Vendas.Add(novaVenda);
         await db.SaveChangesAsync();
@@ -153,5 +167,25 @@ app.MapGet("/listarVendas", async (ApplicationDbContext db) =>
 })
 .WithName("GetVendas")
 .WithOpenApi();
+
+app.MapGet("/relatorio/vendas", async (ApplicationDbContext db) =>
+{
+    var vendas = await db.Vendas
+        .Include(v => v.ItensVenda)
+        .AsNoTracking()
+        .ToListAsync();
+
+    if (!vendas.Any())
+        return Results.NotFound("Nenhuma venda registrada.");
+
+    var pdf = new RelatorioVendasPdf(vendas);
+    var bytes = pdf.GeneratePdf();
+
+    return Results.File(
+        bytes,
+        contentType: "application/pdf",
+        fileDownloadName: $"relatorio_vendas_{DateTime.Now:yyyyMMddHHmm}.pdf"
+    );
+});
 
 app.Run();

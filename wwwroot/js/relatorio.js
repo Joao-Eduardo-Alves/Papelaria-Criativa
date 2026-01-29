@@ -1,20 +1,4 @@
-﻿let produtosDisponiveis = [];
-
-async function carregarProdutos() {
-  try {
-    const response = await fetch("/ListarProduto");
-    if (response.ok) {
-      produtosDisponiveis = await response.json();
-      console.log("Produtos recebidos:", produtosDisponiveis);
-    } else {
-      alert("Erro ao carregar produtos do servidor.");
-    }
-  } catch (error) {
-    console.error("Erro ao buscar produtos:", error);
-  }
-}
-
-async function carregarVendas() {
+﻿async function carregarVendas() {
   try {
     const response = await fetch("/listarVendas");
 
@@ -32,27 +16,12 @@ async function carregarVendas() {
     vendas.forEach((venda) => {
       const tr = document.createElement("tr");
 
-      const nomeProdutos = venda.itensVenda
-        .map((item) => {
-          const produto = produtosDisponiveis.find(
-            (p) => p.id === item.produtoId,
-          );
-          return produto
-            ? `${produto.nome} (${item.quantidade}x)`
-            : `Produto ${item.produtoId} (${item.quantidade}x)`;
-        })
+      const nomesProdutos = venda.itensVenda
+        .map((item) => `${item.nomeExibicao} (${item.quantidade}x)`)
         .join(", ");
 
-      const lucroVenda = venda.itensVenda.reduce((total, item) => {
-        const produto = produtosDisponiveis.find(
-          (p) => p.id === item.produtoId,
-        );
-        if (!produto) return total;
-
-        const lucroItem =
-          (produto.precoVenda - produto.precoCusto) * item.quantidade;
-        return total + lucroItem;
-      }, 0);
+      const valorTotalVenda = venda.valorTotalVenda;
+      const lucroVenda = venda.lucroTotalVenda;
 
       const dataLegivel = new Intl.DateTimeFormat("pt-BR", {
         dateStyle: "short",
@@ -62,8 +31,8 @@ async function carregarVendas() {
       tr.innerHTML = `
                 <td>${venda.id}</td>
                 <td>${dataLegivel}</td>
-                <td>${nomeProdutos}</td>
-                <td>R$ ${Number(venda.valorTotalVenda).toFixed(2)}</td>
+                <td>${nomesProdutos}</td>
+                <td>R$ ${Number(valorTotalVenda).toFixed(2)}</td>
                 <td>R$ ${Number(lucroVenda).toFixed(2)}</td>
             `;
       tbody.appendChild(tr);
@@ -74,7 +43,10 @@ async function carregarVendas() {
   }
 }
 
+function exportarRelatorio() {
+  window.open("/relatorio/vendas", "_blank");
+}
+
 window.addEventListener("load", async () => {
-  await carregarProdutos();
   await carregarVendas();
 });

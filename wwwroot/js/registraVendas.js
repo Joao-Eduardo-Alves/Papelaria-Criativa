@@ -98,8 +98,8 @@ formVenda.addEventListener("submit", async function (event) {
   const venda = {
     produtoId: produto.id,
     quantidade: quantidade,
-    valorTotal: valorTotal.toFixed(2),
     nomeParaExibicao: produto.nome,
+    valorTotal: valorTotal,
   };
 
   vendas.push(venda);

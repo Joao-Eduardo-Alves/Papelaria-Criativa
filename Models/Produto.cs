@@ -1,22 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaWeb.Models
 {
-    public class Produtos
+    public class Produto
     {
         [Key]
         public int Id { get; set; }
-        
+
         [Required]
         [StringLength(100)]
         public string Nome { get; set; } = default!;
-        
-        [Range(0, double.MaxValue)]
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PrecoCusto { get; set; }
-        
-        [Range(0, double.MaxValue)]
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PrecoVenda { get; set; }
-        
+
         [Range(0, int.MaxValue)]
         public int Quantidade { get; set; }
     }

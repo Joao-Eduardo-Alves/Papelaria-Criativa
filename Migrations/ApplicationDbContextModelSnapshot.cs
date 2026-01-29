@@ -30,6 +30,20 @@ namespace SistemaWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("CustoTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("NomeExibicao")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal>("PrecoCustoAtual")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PrecoVendaAtual")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
 
@@ -49,7 +63,7 @@ namespace SistemaWeb.Migrations
                     b.ToTable("ItensVenda");
                 });
 
-            modelBuilder.Entity("SistemaWeb.Models.Produtos", b =>
+            modelBuilder.Entity("SistemaWeb.Models.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +135,10 @@ namespace SistemaWeb.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ValorTotal")
+                    b.Property<decimal>("LucroTotalVenda")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ValorTotalVenda")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
