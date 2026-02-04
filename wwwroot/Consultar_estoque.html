@@ -4,24 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Consultar Estoque</title>
+
     <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
   </head>
   <body>
     <div class="container">
-      <h1>Consultar Estoque</h1>
+      <h1>Estoque</h1>
 
-      <form id="form-cadastro">
-        <label for="buscar-nome">Nome do Produto:</label>
-        <input type="text" id="buscar-nome" name="buscar-nome" required />
+      <form id="form-consulta">
+        <label for="buscar-nome">Buscar produto:</label>
+        <input
+          type="text"
+          id="buscar-nome"
+          name="buscar-nome"
+          placeholder="Digite o nome do produto"
+          required
+        />
 
-        <button id="btn-buscar" type="button">Buscar</button>
+        <button type="submit">Buscar</button>
 
         <div style="text-align: center; margin-top: 20px">
-          <button
-            id="btn-refresh"
-            type="button"
-            style="background-color: mediumpurple; color: white"
-          >
+          <button id="btn-refresh" type="button" class="btn-refresh">
             Recarregar todos produtos
           </button>
         </div>
@@ -35,13 +47,11 @@
             <th>Quantidade</th>
             <th>Valor de custo</th>
             <th>Preço de Venda</th>
-            <th>Editar</th>
+            <th></th>
           </tr>
         </thead>
 
-        <tbody id="tbody-produtos">
-          <!-- As linhas serão geradas pelo JS -->
-        </tbody>
+        <tbody id="tbody-produtos"></tbody>
       </table>
 
       <div style="text-align: center; margin-top: 20px">
@@ -51,11 +61,8 @@
           placeholder="Digite o ID do produto a ser deletado"
           style="width: 250px; height: 30px"
         />
-        <button
-          id="btn-delete"
-          style="background-color: indianred; color: white"
-        >
-          Deletar
+        <button id="btn-deletar" class="btn-delete">
+          <i class="fa-solid fa-trash"></i> Deletar
         </button>
       </div>
 
@@ -99,6 +106,8 @@
       <button id="btn-cancelar">Cancelar</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="../js/toast.js"></script>
     <script src="../js/consulta.js"></script>
     <script src="../js/consultaNome.js"></script>
     <script src="../js/deletePorId.js"></script>

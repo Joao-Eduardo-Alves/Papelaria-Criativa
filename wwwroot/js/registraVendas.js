@@ -17,7 +17,7 @@ async function carregarProdutos() {
       produtosDisponiveis = await response.json();
       atualizarDataList();
     } else {
-      alert("Erro ao carregar produtos do servidor.");
+      toast("Erro ao carregar produtos do servidor.", "erro");
     }
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
@@ -84,13 +84,14 @@ formVenda.addEventListener("submit", async function (event) {
   const valorTotal = parseFloat(inputValorItem.value);
 
   if (!produto) {
-    alert(`Produto "${nomeProduto}" não encontrado.`);
+    toast(`Produto "${nomeProduto}" não encontrado.`, "erro");
     return;
   }
 
   if (produto.quantidade < quantidade) {
-    alert(
+    toast(
       `Estoque insuficiente para "${nomeProduto}".\nDisponível: ${produto.quantidade}\nSolicitado: ${quantidade}`,
+      "aviso",
     );
     return;
   }
@@ -113,7 +114,7 @@ formVenda.addEventListener("submit", async function (event) {
 
 botaoFinalizar.addEventListener("click", async () => {
   if (vendas.length == 0) {
-    alert("nenhuma venda registrada");
+    toast("nenhuma venda registrada", "aviso");
     return;
   }
 
@@ -130,11 +131,11 @@ botaoFinalizar.addEventListener("click", async () => {
     const resultado = await response.json();
 
     if (!response.ok) {
-      alert(`Erro: ${resultado.mensagem}`);
+      toast(`Erro: ${resultado.mensagem}`, "erro");
       return;
     }
 
-    alert(resultado.mensagem);
+    toast(resultado.mensagem, "sucesso");
 
     vendas = [];
 
@@ -146,7 +147,7 @@ botaoFinalizar.addEventListener("click", async () => {
     botaoRegistrar.disabled = true;
   } catch (error) {
     console.error("Erro ao registrar venda:", error);
-    alert("Erro ao registrar venda no servidor.");
+    toast("Erro ao registrar venda no servidor.", "erro");
   }
 });
 

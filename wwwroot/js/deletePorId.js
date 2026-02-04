@@ -1,37 +1,34 @@
-﻿// Seleciona o botão pelo ID
-const botaoDelete = document.getElementById('btn-delete');
+﻿const botaoDelete = document.getElementById("btn-deletar");
 
-botaoDelete.addEventListener('click', async () => {
+botaoDelete.addEventListener("click", async () => {
+  const id = document.getElementById("id-produto").value;
 
-    const resposta = confirm("Tem certeza que deseja excluir este produto?");
-    if (!resposta) return; // Sai da função se clicar em "Cancelar"
+  if (!id) {
+    toast("Digite um ID válido!", "aviso");
+    return;
+  }
 
-    // Pega o valor digitado no input
-    const id = document.getElementById('id-produto').value;
+  const resposta = confirm("Tem certeza que deseja excluir este produto?");
 
-    // Valida se o ID foi digitado
-    if (!id) {
-        alert("Digite um ID válido!");
-        return;
+  if (!resposta) return;
+
+  try {
+    const response = await fetch(`/deletarProduto/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+    const mensagem = data.mensagem;
+
+    if (response.ok) {
+      toast(mensagem, "sucesso");
+      id.value = "";
+      carregarProdutos();
+    } else {
+      toast(mensagem, "erro");
     }
-
-    try {
-
-        // Faz a requisição DELETE
-        const response = await fetch(`/deletarProduto/${id}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            alert(`Produto com ID ${id} deletado com sucesso!`);
-            id.value = ""; // limpa o campo
-            carregarProdutos()
-        } else {
-            alert(`Erro ao deletar produto.`);
-        }
-    } catch (error) {
-        console.error(error);
-        alert("Ocorreu um erro ao tentar deletar o produto.");
-    }
+  } catch (error) {
+    console.error(error);
+    toast("Ocorreu um erro ao tentar deletar o produto.", "erro");
+  }
 });
-

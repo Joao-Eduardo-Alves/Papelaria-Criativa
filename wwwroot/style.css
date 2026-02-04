@@ -1,9 +1,14 @@
+html,
 body {
-  font-family: Arial, sans-serif;
-  background-color: #a0ebce;
+  font-family: "Poppins", sans-serif;
+  background-color: #d2d7e0;
   margin: 0;
   padding: 0;
   text-align: center;
+
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .container {
@@ -14,11 +19,12 @@ body {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #646464;
 }
 
 form {
@@ -40,76 +46,99 @@ input {
   border-radius: 4px;
 }
 
-select {
-  margin-bottom: 15px;
-  padding: 8px;
-  font-size: 14px;
-  background-color: #ffffff;
-  border: 1px solid #a3a3a3;
-  border-radius: 4px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid #b4b4b4;
-  border-radius: 4px;
-  padding: 8px 30px 8px 10px;
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%23999999" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 20px;
-}
-
-.btn-remover {
-  background-color: red;
-  width: 28px;
-  height: 28px;
-}
-.btn-remover:hover {
-  background-color: darkred;
-}
 button {
   padding: 10px;
   font-size: 16px;
   color: #fff;
-  background-color: #4caf50;
+  background-color: #28a745;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #218838;
+}
+.botao-voltar {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  color: #348cf1;
+  text-decoration: none;
+  border: 2px solid #348cf1;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin: 20px auto 40px auto;
 }
 
-th {
-  background-color: #f4f4f9;
+.botao-voltar:hover {
+  background-color: rgb(26, 60, 97);
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-table,
-th,
-td {
-  border: 1px solid #ddd;
+.btn-delete:hover {
+  background-color: #c82333;
 }
 
-th,
-td {
-  padding: 10px;
-  text-align: left;
+.btn-remover {
+  background-color: #dc3545;
+  width: 28px;
+  height: 28px;
 }
-
+.btn-remover:hover {
+  background-color: #c82333;
+}
+.btn-refresh {
+  background-color: #1e70b3;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.btn-refresh:hover {
+  background-color: #11548b;
+}
+.btn-editar {
+  background-color: #f5a134;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-editar i {
+  font-size: 22px;
+}
+.btn-editar:hover {
+  background-color: #e8590c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
 .inicio {
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  justify-content: flex-start;
+  padding: 20px 10px;
 }
 
 .icones {
@@ -117,18 +146,17 @@ td {
   margin: 0px 0;
 }
 
+i {
+  margin: 8px;
+  transition: transform 0.3s ease;
+}
+
 .iconelampada i {
-  color: #ffd700;
+  color: #ffe033;
 }
 
 .iconelapis i {
-  color: #2a5988;
-}
-
-i {
-  margin: 8px;
-  color: #1c509c;
-  transition: transform 0.3s ease;
+  color: #882cb3;
 }
 
 .icones i:hover {
@@ -140,11 +168,11 @@ i {
   display: block;
   margin: 10px;
   font-size: 1.5em;
-  color: #297a76;
+  color: #1e599c;
   text-decoration: none;
   padding: 10px;
   background-color: #ddebf0;
-  border: 1px solid #0b2c97;
+  border: 1px solid #4c8baf;
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
@@ -154,41 +182,49 @@ i {
   color: #fff;
 }
 
-.botao-voltar {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  margin: 20px auto 40px auto;
-}
-
-.botao-voltar:hover {
-  background-color: #0056b3;
-}
-
 .logo {
   text-align: center;
   margin-top: 1px;
 }
 
 .logo-img {
-  width: 260px;
-  animation: piscar 1s infinite;
+  width: 360px;
 }
 
-@media (max-width: 480px) {
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+@media (max-width: 768px) {
+  .table-wrapper {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
   .container {
     width: 95%;
     margin: 10px auto;
     padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5em;
   }
 
   button,
@@ -196,4 +232,12 @@ i {
     width: 100%;
     box-sizing: border-box;
   }
+  .logo-img {
+    width: 200px;
+  }
+}
+
+h3 i {
+  margin-right: 8px;
+  color: black;
 }

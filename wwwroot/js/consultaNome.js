@@ -1,12 +1,5 @@
-﻿console.log("colsultaNome.js carregado");
-
-async function buscarProdutoPorNome() {
+﻿async function buscarProdutoPorNome() {
   const nomeBusca = document.getElementById("buscar-nome").value.trim();
-
-  if (!nomeBusca) {
-    alert("Digite um nome para buscar.");
-    return;
-  }
 
   try {
     const response = await fetch(
@@ -19,7 +12,7 @@ async function buscarProdutoPorNome() {
 
     if (!response.ok) {
       tbody.innerHTML =
-        '<tr><td colspan="4" style="text-align:center">Produto não encontrado</td></tr>';
+        '<tr><td colspan="100%" style="text-align:center">Produto não encontrado</td></tr>';
       return;
     }
 
@@ -28,19 +21,42 @@ async function buscarProdutoPorNome() {
     produtos.forEach((produto) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-            <td>${produto.id}</td>
-            <td>${produto.nome}</td>        <!-- Nome do produto -->
-            <td>${produto.quantidade}</td>  <!-- Quantidade em estoque -->
-            <td>R$ ${Number(produto.precoCusto).toFixed(2)}</td>  <!-- Valor de custo -->
-            <td>R$ ${Number(produto.precoVenda).toFixed(2)}</td>  <!-- Preço de venda -->
-        `;
+        <td>${produto.id}</td>
+        <td>${produto.nome}</td>        
+        <td>${produto.quantidade}</td>  
+        <td>R$ ${Number(produto.precoCusto).toFixed(2)}</td>
+        <td>R$ ${Number(produto.precoVenda).toFixed(2)}</td>
+        <td>
+          <button 
+            type="button" 
+            class="btn-editar"
+            data-id="${produto.id}"
+            data-nome="${produto.nome}"
+            data-quantidade="${produto.quantidade}"
+            data-preco-custo="${produto.precoCusto}"
+            data-preco-venda="${produto.precoVenda}"
+          >
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+        </td>
+      `;
       tbody.appendChild(tr);
     });
   } catch (error) {
     console.error(error);
-    alert("Erro ao buscar o produto.");
+    toast("Erro ao buscar o produto.", "error");
   }
 }
 
-const btnBuscar = document.getElementById("btn-buscar");
-btnBuscar.addEventListener("click", buscarProdutoPorNome);
+const formBusca = document.getElementById("form-consulta");
+
+formBusca.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!formBusca.checkValidity()) {
+    formBusca.reportValidity();
+    return;
+  }
+
+  await buscarProdutoPorNome();
+});

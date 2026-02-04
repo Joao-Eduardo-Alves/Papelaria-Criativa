@@ -39,7 +39,7 @@
     });
   } catch (error) {
     console.error(error);
-    alert("Erro ao carregar o relatório de vendas.");
+    toast("Erro ao carregar o relatório de vendas.", "erro");
   }
 }
 
