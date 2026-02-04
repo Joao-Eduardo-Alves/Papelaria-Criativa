@@ -3,8 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registrar Venda</title>
+
     <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <title>Registrar Venda</title>
   </head>
   <body>
     <div class="container">
@@ -43,20 +54,21 @@
           required
         />
 
-        <button type="submit">Registrar Venda</button>
+        <button type="submit">Adicionar produto</button>
       </form>
 
       <div style="text-align: center; margin-top: 20px">
         <a href="Index.html" class="botao-voltar">Voltar à Tela Inicial</a>
       </div>
 
-      <h3>Carrinho:</h3>
+      <h3><i class="fas fa-shopping-cart"></i> Carrinho:</h3>
       <ul id="listaVendas"></ul>
 
-      <!--botão adicionado p finalziar venda-->
       <button id="finalizar-venda" type="submit">Finalizar venda</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="../js/toast.js"></script>
     <script src="../js/registraVendas.js"></script>
   </body>
 </html>

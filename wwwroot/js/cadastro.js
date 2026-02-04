@@ -8,11 +8,6 @@ formCadastro.addEventListener("submit", async (event) => {
   const precoVenda = parseFloat(document.getElementById("preco-venda").value);
   const quantidade = parseInt(document.getElementById("quantidade").value);
 
-  if (!nome || isNaN(quantidade) || isNaN(precoCusto) || isNaN(precoVenda)) {
-    alert("Por favor, preencha todos os campos corretamente.");
-    return;
-  }
-
   const produto = {
     nome: nome,
     precoCusto: precoCusto,
@@ -32,13 +27,14 @@ formCadastro.addEventListener("submit", async (event) => {
     });
 
     if (response.ok) {
-      alert("Produto cadastrado com sucesso!");
+      toast("Produto cadastrado com sucesso!", "sucesso");
       formCadastro.reset();
     } else if (response.status === 400) {
-      const mensagem = await response.text();
-      alert("Erro de validação: " + mensagem);
+      const data = await response.json();
+      const mensagem = data.mensagem;
+      toast("Erro de validação: " + mensagem, "erro");
     } else {
-      alert("Erro no servidor. Tente novamente mais tarde.");
+      toast("Erro no servidor. Tente novamente mais tarde.", "erro");
       console.error(
         "Erro do servidor:",
         response.status,
@@ -46,7 +42,7 @@ formCadastro.addEventListener("submit", async (event) => {
       );
     }
   } catch (error) {
-    alert("Erro na comunicação com o servidor.");
+    toast("Erro na comunicação com o servidor.", "erro");
     console.error(error);
   }
 });

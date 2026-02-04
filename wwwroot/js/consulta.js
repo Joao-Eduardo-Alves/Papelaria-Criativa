@@ -16,19 +16,32 @@ async function carregarProdutos() {
 
     produtos.forEach((produto) => {
       const tr = document.createElement("tr");
+
       tr.innerHTML = `
-                <td>${produto.id}</td>
-                <td>${produto.nome}</td>
-                <td>${produto.quantidade}</td>
-                <td>R$ ${Number(produto.precoCusto).toFixed(2)}</td>
-                <td>R$ ${Number(produto.precoVenda).toFixed(2)}</td>
-                <td><button class="btn-editar" data-id="${produto.id}" data-nome="${produto.nome}" data-quantidade="${produto.quantidade}" data-preco-custo="${produto.precoCusto}" data-preco-venda="${produto.precoVenda}">✏️ Editar</button></td>
-            `;
+        <td>${produto.id}</td>
+        <td>${produto.nome}</td>
+        <td>${produto.quantidade}</td>
+        <td>R$ ${Number(produto.precoCusto).toFixed(2)}</td>
+        <td>R$ ${Number(produto.precoVenda).toFixed(2)}</td>
+        <td>
+          <button 
+            type="button" 
+            class="btn-editar"
+            data-id="${produto.id}"
+            data-nome="${produto.nome}"
+            data-quantidade="${produto.quantidade}"
+            data-preco-custo="${produto.precoCusto}"
+            data-preco-venda="${produto.precoVenda}">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+        </td>
+      `;
+
       tbody.appendChild(tr);
     });
   } catch (error) {
     console.error(error);
-    alert("Erro ao carregar a lista de produtos.");
+    toast("Erro ao carregar a lista de produtos.", "error");
   }
 }
 
@@ -44,16 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
 let id = null;
 
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("btn-editar")) {
-    const btn = e.target;
-    id = btn.dataset.id;
-    document.getElementById("edit-nome").value = btn.dataset.nome;
-    document.getElementById("edit-quantidade").value = btn.dataset.quantidade;
-    document.getElementById("edit-preco-custo").value = btn.dataset.precoCusto;
-    document.getElementById("edit-preco-venda").value = btn.dataset.precoVenda;
+  const btn = e.target.closest(".btn-editar");
+  if (!btn) return;
 
-    document.getElementById("modal-editar").style.display = "block";
-  }
+  id = btn.dataset.id;
+  document.getElementById("edit-nome").value = btn.dataset.nome;
+  document.getElementById("edit-quantidade").value = btn.dataset.quantidade;
+  document.getElementById("edit-preco-custo").value = btn.dataset.precoCusto;
+  document.getElementById("edit-preco-venda").value = btn.dataset.precoVenda;
+
+  document.getElementById("modal-editar").style.display = "block";
 });
 
 document.getElementById("btn-cancelar").addEventListener("click", () => {
@@ -83,11 +96,12 @@ document.getElementById("btn-salvar").addEventListener("click", async () => {
       throw new Error(resultado.mensagem);
     }
 
-    alert("Produto atualizado com sucesso!");
+    toast("Produto atualizado com sucesso!", "sucesso");
+
     document.getElementById("modal-editar").style.display = "none";
     carregarProdutos();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    toast(error.message, "erro");
   }
 });

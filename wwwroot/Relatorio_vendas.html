@@ -9,26 +9,26 @@
   <body>
     <div class="container">
       <h1>Relatório de Vendas</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID da venda</th>
-            <th>Data</th>
-            <th>Itens/Quantidade</th>
-            <th>Valor total da venda</th>
-            <th>Lucro da venda</th>
-          </tr>
-        </thead>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID da venda</th>
+              <th>Data</th>
+              <th>Itens/Quantidade</th>
+              <th>Valor total da venda</th>
+              <th>Lucro da venda</th>
+            </tr>
+          </thead>
 
-        <tbody id="tbody-relatorio">
-          <!-- Linhas geradas pelo JS -->
-        </tbody>
-      </table>
+          <tbody id="tbody-relatorio"></tbody>
+        </table>
+      </div>
 
       <div style="text-align: center; margin-top: 20px">
         <a href="Index.html" class="botao-voltar">Voltar à Tela Inicial</a>
         <button onclick="exportarRelatorio()" class="botao-gerar-pdf">
-          Gerar PDF
+          Gerar relatório em PDF
         </button>
       </div>
     </div>
