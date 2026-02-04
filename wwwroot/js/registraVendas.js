@@ -45,6 +45,8 @@ inputProduto.addEventListener("input", () => {
   if (produtosValidados.includes(produtoDigitado)) {
     inputProduto.style.borderColor = "green";
     botaoRegistrar.disabled = false;
+
+    calcularTotal();
   } else {
     inputProduto.style.borderColor = "red";
     botaoRegistrar.disabled = true;
