@@ -44,7 +44,7 @@
 }
 
 function exportarRelatorio() {
-  window.open("/relatorio/vendas", "_blank");
+  window.open("/pdf/vendas", "_blank");
 }
 
 window.addEventListener("load", async () => {
