@@ -34,7 +34,10 @@ app.UseStaticFiles();
 
 app.MapGet("/listarProduto", async (ApplicationDbContext db) =>
 {
-    var produtos = await db.Produtos.ToListAsync();
+    var produtos = await db.Produtos
+        .AsNoTracking()
+        .ToListAsync();
+
     return Results.Ok(produtos);
 })
 .WithName("GetProdutos")
@@ -43,8 +46,8 @@ app.MapGet("/listarProduto", async (ApplicationDbContext db) =>
 app.MapGet("/buscarNome", async ([FromQuery] string nome, ApplicationDbContext db) =>
 {
     var produto = await db.Produtos
-       .AsNoTracking()
        .Where(p => p.Nome.Contains(nome))
+       .AsNoTracking()
        .ToListAsync();
 
     if (!produto.Any())
@@ -66,7 +69,7 @@ app.MapPost("/adicionar", async ([FromBody] Produto produto, ApplicationDbContex
     {
         return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor ou igual ao preço de custo." });
     }
-    if (produto.Quantidade <= 0)
+    if (produto.Quantidade < 0)
     {
         return Results.BadRequest(new { mensagem = "Quantidade não pode ser menor que 0." });
     }
@@ -75,15 +78,6 @@ app.MapPost("/adicionar", async ([FromBody] Produto produto, ApplicationDbContex
     await db.SaveChangesAsync();
 
     return Results.Created($"/produtos/{produto.Id}", produto);
-})
-.WithOpenApi();
-
-app.MapDelete("/deletar", async (ApplicationDbContext db) =>
-{
-    await db.Produtos.ExecuteDeleteAsync();
-    await db.SaveChangesAsync();
-
-    return Results.Ok(new { mensagem = "Todos os produtos foram deletados." });
 })
 .WithOpenApi();
 
@@ -151,9 +145,9 @@ app.MapPost("/registrarVenda", async ([FromBody] List<ItemVenda> itensVenda, App
             mensagem = "Venda registrada com sucesso!",
         });
     }
-    catch (Exception ex)
+    catch
     {
-        return Results.BadRequest(new { mensagem = $"Erro ao registrar venda: {ex.Message}" });
+        return Results.BadRequest(new { mensagem = "Erro ao registrar venda." });
     }
 })
 .WithOpenApi();
@@ -162,13 +156,14 @@ app.MapGet("/listarVendas", async (ApplicationDbContext db) =>
 {
     var vendas = await db.Vendas
         .Include(v => v.ItensVenda)
+        .AsNoTracking()
         .ToListAsync();
     return Results.Ok(vendas);
 })
 .WithName("GetVendas")
 .WithOpenApi();
 
-app.MapGet("/relatorio/vendas", async (ApplicationDbContext db) =>
+app.MapGet("/pdf/vendas", async (ApplicationDbContext db) =>
 {
     var vendas = await db.Vendas
         .Include(v => v.ItensVenda)
@@ -204,7 +199,7 @@ app.MapPut("/editarProduto/{id}", async ([FromRoute] int id, [FromBody] Produto 
     {
         return Results.BadRequest(new { mensagem = "Preço de venda não pode ser menor ou igual ao preço de custo." });
     }
-    if (produtoAtualizado.Quantidade <= 0)
+    if (produtoAtualizado.Quantidade < 0)
     {
         return Results.BadRequest(new { mensagem = "Quantidade não pode ser menor que 0." });
     }

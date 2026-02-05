@@ -1,6 +1,4 @@
-﻿console.log("consulta.js carregado");
-
-async function carregarProdutos() {
+﻿async function carregarProdutos() {
   try {
     const response = await fetch("/listarProduto");
 
