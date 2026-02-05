@@ -16,6 +16,8 @@ Este projeto foi desenvolvido como um case, simulando um cenário real de um com
 
 O levantamento de requisitos foi feito de forma simulada, utilizando uma IA como stakeholder, permitindo validar regras de negócio, fluxos e decisões técnicas antes da implementação.
 
+![Gif do levantamento de requisitos](docs/levantamentoRequisitos.gif)
+
 ## 📊 Objetivos
 
 - Demonstrar domínio de C# com Minimal APIs
@@ -31,7 +33,7 @@ O levantamento de requisitos foi feito de forma simulada, utilizando uma IA como
 ## 👩‍💻 Tecnologias Utilizadas
 ### Backend:
 
-- .NET 7 / 8
+- .NET 10 SDK
 
 - C# – Minimal API
 
@@ -136,3 +138,7 @@ Swagger: http://localhost:xxxx/swagger
 
 Este projeto tem como foco clareza, organização e boas práticas, evitando complexidade desnecessária.
 Todas as decisões foram tomadas visando um cenário real de manutenção, leitura de código e evolução futura.
+
+# Demonstração do sistema
+
+![Gif demonstrativo do sistema](docs/demonstracao.gif)
