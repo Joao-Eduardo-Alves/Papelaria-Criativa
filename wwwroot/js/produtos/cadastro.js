@@ -18,7 +18,7 @@ formCadastro.addEventListener("submit", async (event) => {
   try {
     console.log(JSON.stringify(produto));
 
-    const response = await fetch("/adicionar", {
+    const response = await fetch("/produtos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

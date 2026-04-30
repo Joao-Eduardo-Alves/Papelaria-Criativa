@@ -3,7 +3,7 @@
 
   try {
     const response = await fetch(
-      `/buscarNome?nome=${encodeURIComponent(nomeBusca)}`,
+      `/produtos/nome?nome=${encodeURIComponent(nomeBusca)}`,
     );
 
     const tbody = document.getElementById("tbody-produtos");

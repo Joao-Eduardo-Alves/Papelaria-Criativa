@@ -1,6 +1,6 @@
 ﻿async function carregarVendas() {
   try {
-    const response = await fetch("/listarVendas");
+    const response = await fetch("/vendas");
 
     if (!response.ok) {
       throw new Error("Erro ao buscar vendas");
