@@ -13,7 +13,7 @@ botaoDelete.addEventListener("click", async () => {
   if (!resposta) return;
 
   try {
-    const response = await fetch(`/deletarProduto/${id}`, {
+    const response = await fetch(`/produtos/${id}`, {
       method: "DELETE",
     });
 

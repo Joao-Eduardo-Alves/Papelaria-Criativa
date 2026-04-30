@@ -12,7 +12,7 @@ let vendas = [];
 
 async function carregarProdutos() {
   try {
-    const response = await fetch("/ListarProduto");
+    const response = await fetch("/produtos");
     if (response.ok) {
       produtosDisponiveis = await response.json();
       atualizarDataList();
@@ -122,7 +122,7 @@ botaoFinalizar.addEventListener("click", async () => {
 
   try {
     console.log("Vendas enviadas:", vendas);
-    const response = await fetch("/registrarVenda", {
+    const response = await fetch("/vendas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -133,11 +133,11 @@ botaoFinalizar.addEventListener("click", async () => {
     const resultado = await response.json();
 
     if (!response.ok) {
-      toast(`Erro: ${resultado.mensagem}`, "erro");
+      toast(`Erro: ${resultado}`, "erro");
       return;
     }
 
-    toast(resultado.mensagem, "sucesso");
+    toast("Venda registrada com sucesso!", "sucesso");
 
     vendas = [];
 
